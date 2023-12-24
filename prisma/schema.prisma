@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Team {
+  id              Int  @id @default(autoincrement())
+  teamName        String
+  ownerName       String
+  coach           Json
+  netWorth        Float
+  players         Player[]
+
+  @@unique([id, teamName])
+  @@map("Teams")
+}
+
+model Player {
+  id              Int  @id @default(autoincrement())
+  playerName      String
+  physicals       Json
+  mentalStats     Json
+  characteristics CHARACTERISTICS
+  height          Float
+  weight          Float
+  basePrise       Float
+  actualPrise     Float
+  injured         Json
+  fitnessScore    Float
+  analysis        Json
+  playerType      PLAYERTYPE
+  teamId          Int
+  teamName        String
+  team            Team @relation(fields: [teamId, teamName], references: [id, teamName])
+
+   @@map("Players")
+}
+
+enum CHARACTERISTICS {
+  CALM
+  AGGRESSIVE
+}
+
+enum PLAYERTYPE{
+  BATSMEN
+  BATSMEN_WICKETKEEPER
+  BOWLER
+  ALL_ROUNDER
+}
