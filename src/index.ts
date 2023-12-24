@@ -1,15 +1,29 @@
 // import packages or dependencies
 import { Prisma, PrismaClient } from "@prisma/client";
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 import path from "path";
 
-const PORT = process.env.PORT;
+// import local files
+import PlayerRoutes from "./routes/player.route"; 
+import TeamRoutes from "./routes/team.route";
+
 
 const app = express();
 
+const PORT = process.env.PORT;
+
+// middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Load Routes
+app.use("/api/v1", PlayerRoutes);
+app.use("/api/v1", TeamRoutes);
+
+
+// created the instance of Prisma client
 const prisma = new PrismaClient()
 
 app.get('/', (req, res) => {
