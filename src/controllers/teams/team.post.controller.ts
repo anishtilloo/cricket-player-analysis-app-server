@@ -1,11 +1,8 @@
+import { Request, Response } from 'express';
+import prisma from '../../utils/prisma';
 
-import { PrismaClient } from "@prisma/client";
-import { TypedRequestBodyTeam, TypedResponseTeam } from "../types/team.types"
 
-// created the instance of Prisma client
-const prisma = new PrismaClient()
-
-export async function addTeam(req: TypedRequestBodyTeam , res: TypedResponseTeam) {
+export async function addTeam(req: Request , res: Response) {
     try {
         const result = await prisma.team.create({
             data: {
@@ -16,15 +13,17 @@ export async function addTeam(req: TypedRequestBodyTeam , res: TypedResponseTeam
             }
         })
         console.log(result);
-        console.log(res);
-        
-        res.json({ 
+        res.status(201).json({ 
             success: true, 
-            message: "Added Novel Successfully", 
+            message: "Team Added Successfully", 
             data: result 
         })
     } catch (error) {
         console.log(error);
-        
+        res.status(501).json({ 
+            success: true, 
+            message: "Team Added Successfully", 
+            error: error 
+        })
     }
 }

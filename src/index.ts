@@ -5,8 +5,9 @@ import cors from "cors";
 import path from "path";
 
 // import local files
-import PlayerRoutes from "./routes/player.route"; 
-import TeamRoutes from "./routes/team.route";
+import PlayerRoutes from "./routes/player/player.route"; 
+import TeamRoutes from "./routes/team/team.route";
+import authRoutes from "./routes/auth/auth.route";
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // Load Routes
 app.use("/api/v1", PlayerRoutes);
 app.use("/api/v1", TeamRoutes);
+app.use("/api/v1/auth", authRoutes)
 
 
 // created the instance of Prisma client
@@ -30,92 +32,6 @@ app.get('/', (req, res) => {
     res.send("Hello World");
 })
 
-
-// team post api
-app.post('/api/team', async (req, res) => {
-    try {
-        const result = await prisma.team.create({
-            data: {
-                teamName: req.body.teamName,
-                ownerName: req.body.ownerName,
-                coach: req.body.coach,
-                netWorth: req.body.netWorth
-            }
-        })
-        console.log(result);
-        res.json(200)
-        return {
-            success: true,
-            result
-        }
-    } catch (error) {
-        console.log(error);
-        
-    }
-})
-
-// team get api
-app.get('/api/team/:id', async (req, res) => {
-    try {
-        const result = await prisma.team.findFirst({
-            where: {
-                id: Number(req.params.id)
-            },
-            include: {
-                players: true
-            }
-        })
-        console.log(result);
-        res.json({result})
-        return {
-            success: true,
-            result
-        }
-    } catch (error) {
-        console.log(error);   
-    }
-})
-
-// player post api
-app.post('/api/insert-player', async (req, res) => {
-    try {
-        const result = await prisma.player.create({
-            data: {
-                playerName: req.body.playerName,
-                physicals: req.body.physicals,
-                mentalStats: req.body.mentalStats,
-                characteristics: req.body.characteristics,
-                injured: req.body.injured,
-                analysis: req.body.analysis,
-                height: req.body.height,
-                weight: req.body.weight,
-                basePrise: req.body.basePrise,
-                actualPrise: req.body.actualPrise,
-                fitnessScore: req.body.fitnessScore,
-                playerType: req.body.playerType,
-                teamId: req.body.teamId,
-                teamName: req.body.teamName
-            }
-        })
-        res.json({result})
-    } catch (error) {
-        console.log(error);
-    }
-})
-
-// player get api
-app.get('/api/get-player/:id', async (req, res) => {
-    try {
-        const result = await prisma.player.findFirst({
-            where: {
-                id: Number(req.params.id)
-            }
-        })
-        res.json({result})
-    } catch (error) {
-        console.log(error);
-    }
-})
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`); 
