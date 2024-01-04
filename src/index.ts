@@ -1,15 +1,15 @@
 // import packages or dependencies
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
-import path from "path";
+import dotenv from 'dotenv'; 
 
 // import local files
 import PlayerRoutes from "./routes/player/player.route"; 
 import TeamRoutes from "./routes/team/team.route";
 import authRoutes from "./routes/auth/auth.route";
 
-
+dotenv.config();   // Load environment variables from .env file 
 const app = express();
 
 const PORT = process.env.PORT;

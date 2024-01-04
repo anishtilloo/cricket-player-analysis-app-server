@@ -1,50 +1,48 @@
 import { Request, Response } from 'express';
-import prisma from '../../utils/prisma';
+import { listTeams, getTeam } from '../../services/teams/team.get.services';
 
+// GET : Request 
+// get one team by id
 export async function getOneTeam(req: Request, res: Response) {
     try {
-        const result = await prisma.team.findFirst({
-            where: {
-                id: Number(req.params.id)
-            },
-            include: {
-                players: true
-            }
-        })
-        console.log(result);
-        res.status(200).json({ 
+        const id = req.params.id;
+        const teamId = Number(id);
+        const team = await getTeam(teamId);
+        if (team) {
+                return res.status(200).json({ 
+                success: true, 
+                message: "Team Fetched Successfully", 
+                data: team 
+            })
+        } else {
+            return res.status(404).json({
+                success: false,
+                message: "Team does not exist in the DB",
+            })
+        }
+    } catch (error) {  
+        return res.status(500).json({ 
             success: true, 
-            message: "Team Fetched Successfully", 
-            data: result 
-        })
-    } catch (error) {
-        console.log(error);   
-        res.status(501).json({ 
-            success: true, 
-            message: "Team Added Successfully", 
+            message: "Something went wrong", 
             error: error 
         })
     }
 }
 
+// GET request
+// get all teams
 export async function getAll(req: Request, res: Response){
     try {
-        const result = await prisma.team.findMany({
-            include: {
-                players: true
-            }
-        })
-        console.log(result);
-        res.status(200).json({ 
+        const teams = await listTeams();
+        return res.status(200).json({ 
             success: true, 
             message: "Teams Fetched Successfully", 
-            data: result 
+            data: teams 
         })
-    } catch (error) {
-        console.log(error);   
-        res.status(501).json({ 
+    } catch (error) { 
+        return res.status(501).json({ 
             success: true, 
-            message: "something went wrong", 
+            message: "Something went wrong", 
             error: error 
         })
     }
