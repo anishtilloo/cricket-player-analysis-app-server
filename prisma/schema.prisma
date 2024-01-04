@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,9 +11,9 @@ model User {
   id            String         @id @unique @default(uuid())
   email         String         @unique
   password      String
-  refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
 
   @@map("Users")
 }
@@ -25,29 +22,28 @@ model RefreshToken {
   id          String   @id @unique @default(uuid())
   hashedToken String
   userId      String
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   revoked     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("RefreshTokens")
 }
 
-
 model Team {
-  id              Int  @id @default(autoincrement())
-  teamName        String
-  ownerName       String
-  coach           Json
-  netWorth        Float
-  players         Player[]
+  id        Int      @id @default(autoincrement())
+  teamName  String
+  ownerName String
+  coach     Json
+  netWorth  Float
+  players   Player[]
 
   @@unique([id, teamName])
   @@map("Teams")
 }
 
 model Player {
-  id              Int  @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   playerName      String
   physicals       Json
   mentalStats     Json
@@ -62,9 +58,9 @@ model Player {
   playerType      PLAYERTYPE
   teamId          Int
   teamName        String
-  team            Team @relation(fields: [teamId, teamName], references: [id, teamName])
+  team            Team            @relation(fields: [teamId, teamName], references: [id, teamName])
 
-   @@map("Players")
+  @@map("Players")
 }
 
 enum CHARACTERISTICS {
@@ -72,7 +68,7 @@ enum CHARACTERISTICS {
   AGGRESSIVE
 }
 
-enum PLAYERTYPE{
+enum PLAYERTYPE {
   BATSMEN
   BATSMEN_WICKETKEEPER
   BOWLER
