@@ -24,10 +24,6 @@ app.use("/api/v1", PlayerRoutes);
 app.use("/api/v1", TeamRoutes);
 app.use("/api/v1/auth", authRoutes)
 
-
-// created the instance of Prisma client
-const prisma = new PrismaClient()
-
 app.get('/', (req, res) => {
     res.send("Hello World");
 })

@@ -3,7 +3,7 @@ import { CHARACTERISTICS, PLAYERTYPE } from "@prisma/client";
 export type Player = {
     id?: number;
     playerName: string;
-    physicals: string;
+    physicals: any;
     mentalStats: any;
     characteristics: CHARACTERISTICS;
     height: number;
