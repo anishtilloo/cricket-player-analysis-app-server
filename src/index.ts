@@ -1,5 +1,4 @@
 // import packages or dependencies
-import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv'; 
@@ -22,12 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 // Load Routes
 app.use("/api/v1", PlayerRoutes);
 app.use("/api/v1", TeamRoutes);
-app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/auth", authRoutes);
 
-app.get('/', (req, res) => {
-    res.send("Hello World");
+app.get('/testing-route', (req, res) => {
+    res.send("Testing Server is Working");
 })
-
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`); 

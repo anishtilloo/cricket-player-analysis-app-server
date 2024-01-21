@@ -31,12 +31,13 @@ model RefreshToken {
 }
 
 model Team {
-  id        Int      @id @default(autoincrement())
-  teamName  String
-  ownerName String
-  coach     Json
-  netWorth  Float
-  players   Player[]
+  id          Int      @id @default(autoincrement())
+  teamName    String
+  ownerName   String
+  coach       Json
+  netWorth    Float
+  teamLogo    String
+  players     Player[]
 
   @@unique([id, teamName])
   @@map("Teams")
@@ -45,16 +46,17 @@ model Team {
 model Player {
   id              Int             @id @default(autoincrement())
   playerName      String
-  physicals       Json
-  mentalStats     Json
-  characteristics CHARACTERISTICS
+  playerImg       String
+  characteristics String[]
   height          Float
   weight          Float
   basePrise       Float
   actualPrise     Float
-  injured         Json
   fitnessScore    Float
+  injured         Json
   analysis        Json
+  physicals       Json
+  mentalStats     Json
   playerType      PLAYERTYPE
   teamId          Int
   teamName        String
@@ -63,10 +65,6 @@ model Player {
   @@map("Players")
 }
 
-enum CHARACTERISTICS {
-  CALM
-  AGGRESSIVE
-}
 
 enum PLAYERTYPE {
   BATSMEN
