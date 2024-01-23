@@ -3,8 +3,7 @@ import {
     any, 
     intersection, 
     nativeEnum as _enum,
-    infer as Zinfer,
-    ZodObject
+    infer as Zinfer
 } from 'zod';
 import { 
     NumberAndFloatMinMaxSchema, 
