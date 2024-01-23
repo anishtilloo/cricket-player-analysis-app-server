@@ -19,7 +19,7 @@ teamRouter.post('/add-team', addTeam);
 teamRouter.put('/update-team/:id', updateTeam);
 
 // Delete Routes
-teamRouter.delete('/team/delete/:id', deleteOneTeam)
+teamRouter.delete('/team/delete/:id', deleteOneTeam);
 
 
 export default teamRouter;

@@ -1,13 +1,15 @@
 import prisma from "../../utils/prisma";
 import type { Player, Players } from "../../types/player.types";
+import { PlayerSchemaType } from "../../schemas/player.schema";
 
 const addPlayer = async (player: Omit<Player, "id">) : Promise<Player> => {
     const {
-        playerName, physicals, mentalStats, characteristics, height, weight, basePrise, actualPrise, injured, fitnessScore, analysis, playerType, teamId, teamName,
+        playerName, playerImg, physicals, mentalStats, characteristics, height, weight, basePrise, actualPrise, injured, fitnessScore, analysis, playerType, team
     } = player;
-    return  prisma.player.create({
+    return  await prisma.player.create({
         data: {
             playerName: playerName,
+            playerImg: playerImg,
             physicals: physicals,
             mentalStats: mentalStats,
             characteristics: characteristics,
@@ -19,8 +21,7 @@ const addPlayer = async (player: Omit<Player, "id">) : Promise<Player> => {
             fitnessScore: fitnessScore,
             analysis: analysis,
             playerType: playerType,
-            teamId: teamId,
-            teamName: teamName,
+            team: team
         }
     })
 }

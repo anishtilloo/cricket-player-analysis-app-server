@@ -1,11 +1,13 @@
-import { CHARACTERISTICS, PLAYERTYPE } from "@prisma/client";
+import { PLAYERTYPE } from "@prisma/client";
+import { Team } from "./team.types";
 
 export type Player = {
     id?: number;
     playerName: string;
+    playerImg: string;
     physicals: any;
     mentalStats: any;
-    characteristics: CHARACTERISTICS;
+    characteristics: string[];
     height: number;
     weight: number;
     basePrise: number;
@@ -14,8 +16,7 @@ export type Player = {
     fitnessScore: number,
     analysis: any,
     playerType: PLAYERTYPE,
-    teamId: number,
-    teamName: string,
+    team?: Team
 }
 
 export type Players = Player[];
