@@ -25,6 +25,7 @@ export const listPlayers = async (): Promise<Players> => {
         select: {
             id: true,
             playerName: true,
+            playerImg: true,
             physicals: true,
             mentalStats: true,
             characteristics: true,

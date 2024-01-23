@@ -12,8 +12,7 @@ import {
     StringArray, 
     StringMax50 
 } from './common.schema';
-import { PLAYERTYPE, Team } from '@prisma/client';
-import { Player } from '../types/player.types';
+import { PLAYERTYPE } from '@prisma/client';
 import { TeamSchema } from './team.schema';
 
 export const PlayerSchema : any = object({

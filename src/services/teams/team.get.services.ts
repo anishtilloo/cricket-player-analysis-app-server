@@ -5,6 +5,7 @@ export const listTeams = async (): Promise<Teams> => {
     return prisma.team.findMany({
         select: {
             id: true,
+            teamLogo: true,
             teamName: true,
             ownerName: true,
             coach: true,
