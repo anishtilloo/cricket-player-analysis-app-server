@@ -12,6 +12,21 @@ const twoFifty = 250;
 const threeHundred = 300;
 
 
+export const PasswordSchema = (fieldName = "This field") => 
+    string({
+        required_error: `${fieldName} is required.`,
+    }).trim()
+    .min(8, { message: `${fieldName} must contain at most 8 character(s)` });
+  
+export const EmailSchema = (fieldName = "This field") =>
+    string({
+        required_error: "Email is required",
+        invalid_type_error: `${fieldName} is required.`,
+    }).trim()
+    .max(fifty, `${fieldName} must contain at most ${fifty} character(s)`)
+    .email({ message: "Invalid email address" });
+
+
 export const OptionalField = (fieldValidation: any) =>
     optional(fieldValidation).or(literal("")).or(literal(null));
 
@@ -19,7 +34,8 @@ export const StringMax15 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(fifteen, {
         message: `${fieldName} should be at least ${fifteen} character.`
@@ -29,7 +45,8 @@ export const StringMax25 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(twentyFive, {
         message: `${fieldName} should be at least ${twentyFive} character.`
@@ -39,7 +56,8 @@ export const StringMax50 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(fifty, {
         message: `${fieldName} should be at least ${fifty} character.`
@@ -49,7 +67,8 @@ export const StringMax100 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(hundred, {
         message: `${fieldName} should be at least ${hundred} character.`
@@ -59,7 +78,8 @@ export const StringMax200 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(twoHundered, {
         message: `${fieldName} should be at least ${twoHundered} character.`
@@ -69,7 +89,8 @@ export const StringMax250 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(twoFifty, {
         message: `${fieldName} should be at least ${twoFifty} character.`
@@ -79,7 +100,8 @@ export const StringMax300 = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(one, {
+    }).trim()
+    .min(one, {
         message: `${fieldName} should be at least ${one} character.`
     }).max(threeHundred, {
         message: `${fieldName} should be at least ${threeHundred} character.`
@@ -101,7 +123,8 @@ export const MobileNumber = (fieldName = "This field") =>
     string({
         required_error: `${fieldName} is required.`,
         invalid_type_error: `${fieldName} should be of string.`
-    }).min(ten, {
+    }).trim()
+    .min(ten, {
         message: `${fieldName} should be at least ${ten} character.`
     }).max(ten, {
         message: `${fieldName} should be at least ${ten} character.`

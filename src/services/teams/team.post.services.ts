@@ -1,14 +1,15 @@
 import prisma from "../../utils/prisma";
-import type { Team, Teams } from "../../types/team.types";
+import { TeamSchemaType } from "../../schemas/team.schema";
 
-const addTeam = async (team: Omit<Team, "id">) : Promise<Team> => {
-    const { teamName, ownerName, coach, netWorth } = team;
+const addTeam = async (team: TeamSchemaType) => {
+    const { teamName, ownerName, coach, netWorth, teamLogo } = team;
     return  prisma.team.create({
         data: {
             teamName: teamName,
             ownerName: ownerName,
             coach: coach,
-            netWorth: netWorth
+            netWorth: netWorth,
+            teamLogo: teamLogo
         }
     })
 }

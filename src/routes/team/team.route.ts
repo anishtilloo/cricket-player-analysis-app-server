@@ -1,25 +1,32 @@
 import { Router } from "express";
+
+// controllers
 import { getAll, getOneTeam } from "../../controllers/teams/team.get.controller";
 import { addTeam } from "../../controllers/teams/team.post.controller";
 import { updateTeam } from "../../controllers/teams/team.put.controller";
 import { deleteOneTeam } from "../../controllers/teams/team.delete.controller";
 
+// Middlewares
+// validation
+import { validate } from "../../middlewares/validate";
+import { TeamSchema } from "../../schemas/team.schema";
+
 const teamRouter = Router();
 
 // GET Routes
-teamRouter.get('/team/:id', getOneTeam);
+teamRouter.get('/get-team/:id', getOneTeam);
 teamRouter.get('/get-all-teams', getAll);
 
 
 // POST Routes
-teamRouter.post('/add-team', addTeam);
+teamRouter.post('/add-team', validate(TeamSchema), addTeam);
 
 
 // PUT Routes
-teamRouter.put('/update-team/:id', updateTeam);
+teamRouter.put('/update-team/:id', validate(TeamSchema), updateTeam);
 
 // Delete Routes
-teamRouter.delete('/team/delete/:id', deleteOneTeam);
+teamRouter.delete('/delete-team/:id', deleteOneTeam);
 
 
 export default teamRouter;

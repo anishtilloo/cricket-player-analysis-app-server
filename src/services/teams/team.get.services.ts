@@ -1,7 +1,6 @@
 import prisma from "../../utils/prisma";
-import type { Team, Teams } from "../../types/team.types";
 
-export const listTeams = async (): Promise<Teams> => {
+export const listTeams = async () => {
     return prisma.team.findMany({
         select: {
             id: true,
@@ -14,7 +13,7 @@ export const listTeams = async (): Promise<Teams> => {
     })
 }
 
-export const getTeam = async (id: number): Promise<Team | null> => {
+export const getTeam = async (id: number) => {
     return prisma.team.findUnique({
         where: {
             id,

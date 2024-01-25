@@ -5,18 +5,18 @@ export type Player = {
     id?: number;
     playerName: string;
     playerImg: string;
-    physicals: any;
-    mentalStats: any;
     characteristics: string[];
     height: number;
     weight: number;
     basePrise: number;
     actualPrise: number;
-    injured: any;
     fitnessScore: number,
+    injured: any;
     analysis: any,
+    physicals: any;
+    mentalStats: any;
     playerType: PLAYERTYPE,
-    team?: Team
+    team: Team
 }
 
 export type Players = Player[];

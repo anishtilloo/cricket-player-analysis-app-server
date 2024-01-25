@@ -16,7 +16,7 @@ import { TeamSchema } from './team.schema';
 
 export const PlayerSchema : any = object({
     playerName: StringMax50(),
-    playerImg: any(),
+    playerImg: StringMax50(),
     characteristics: StringArray(),
     height: intersection(NumberSchema(), NumberAndFloatMinMaxSchema("This field", 55, 300)),
     weight: intersection(NumberSchema(), NumberAndFloatMinMaxSchema("This field", 1, 500)),
@@ -28,7 +28,7 @@ export const PlayerSchema : any = object({
     physicals: any(),
     mentalStats: any(),
     playerType: _enum(PLAYERTYPE),
-    team: TeamSchema,
+    team: TeamSchema
 });
 
 export type PlayerSchemaType = Zinfer<typeof PlayerSchema>

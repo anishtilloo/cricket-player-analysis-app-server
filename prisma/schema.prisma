@@ -8,13 +8,20 @@ datasource db {
 }
 
 model User {
-  id            String         @id @unique @default(uuid())
-  email         String         @unique
-  password      String
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  refreshTokens RefreshToken[]
+  id                  String            @id @unique @default(uuid())
+  name                String            @db.VarChar(255)
+  email               String            @unique
+  password            String
+  avatar              String?           @default("default.png")
+  backgroundImg       String?
+  role                RoleEnumType?     @default(user)
+  verificationCode    String?           @db.Text @unique
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  refreshTokens       RefreshToken[]
 
+  @@unique([email, verificationCode])
+  @@index([email, verificationCode])
   @@map("Users")
 }
 
@@ -65,6 +72,12 @@ model Player {
   @@map("Players")
 }
 
+enum RoleEnumType {
+  user
+  recruiter
+  teamOwner
+  admin
+}
 
 enum PLAYERTYPE {
   BATSMEN

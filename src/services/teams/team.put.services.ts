@@ -1,25 +1,14 @@
 import prisma from "../../utils/prisma";
-import type { Team, Teams } from "../../types/team.types";
+import { TeamSchemaType } from "../../schemas/team.schema";
 
-export const update = async (id: number, team: Omit<Team, "id">) : Promise<Team> => {
-    const { teamName, ownerName, coach, netWorth } = team;
+export const update = async (id: number, team: TeamSchemaType) => {
     return  prisma.team.update({
         where: {
             id,
         },
         data: {
-            teamName,
-            ownerName,
-            coach,
-            netWorth
+            ...team
         },
-        select: {
-            id: true,
-            teamName: true,
-            ownerName: true,
-            coach: true,
-            netWorth: true,
-        }
     })
 }
 

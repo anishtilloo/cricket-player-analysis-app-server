@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
 import addPlayerService  from "../../services/players/player.post.services"
-import { PlayerSchemaType, PlayerSchema } from '../../schemas/player.schema';
+import { PlayerSchema } from '../../schemas/player.schema';
 
 
 // POST request
 // create new player in the DB 
 export async function addPlayer(req: Request , res: Response) {
     try {
-        const team = req.body;
-        const validatedteam = PlayerSchema.parse(team)
-        const result = await addPlayerService(validatedteam);
+        const player = req.body;
+        const result = await addPlayerService(player);
         res.status(201).json({ 
             success: true, 
             message: "Player Added Successfully", 
