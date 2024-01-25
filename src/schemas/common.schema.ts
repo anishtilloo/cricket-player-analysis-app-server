@@ -15,13 +15,14 @@ const threeHundred = 300;
 export const PasswordSchema = (fieldName = "This field") => 
     string({
         required_error: `${fieldName} is required.`,
+        invalid_type_error: `${fieldName} is of type string.`,
     }).trim()
     .min(8, { message: `${fieldName} must contain at most 8 character(s)` });
   
 export const EmailSchema = (fieldName = "This field") =>
     string({
         required_error: "Email is required",
-        invalid_type_error: `${fieldName} is required.`,
+        invalid_type_error: `${fieldName} is of type string.`,
     }).trim()
     .max(fifty, `${fieldName} must contain at most ${fifty} character(s)`)
     .email({ message: "Invalid email address" });

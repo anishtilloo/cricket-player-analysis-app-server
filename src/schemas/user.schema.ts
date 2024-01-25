@@ -6,6 +6,7 @@ import {
 } from 'zod';
 import { 
     EmailSchema,
+    NumberSchema,
     OptionalField, 
     PasswordSchema, 
     StringMax50 
@@ -13,11 +14,16 @@ import {
 import { RoleEnumType } from '@prisma/client';
 
 export const CreateUserSchema : any = object({
-    name: StringMax50(),
-    email: EmailSchema(),
-    password: PasswordSchema(),
-    passwordConfirm: StringMax50(),
-    role: OptionalField(z.nativeEnum(RoleEnumType)),
+    params: object({
+        id: NumberSchema(),
+    }),
+    body: object({
+        name: StringMax50(),
+        email: EmailSchema(),
+        password: PasswordSchema(),
+        passwordConfirm: StringMax50(),
+        role: OptionalField(z.nativeEnum(RoleEnumType)),
+    })
 });
 
-export type CreateUserSchemaType = Zinfer<typeof CreateUserSchema>
+export type CreateUserSchemaType = Zinfer<typeof CreateUserSchema["body"]>

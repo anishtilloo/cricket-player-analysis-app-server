@@ -14,7 +14,7 @@ import { TeamSchema } from "../../schemas/team.schema";
 const teamRouter = Router();
 
 // GET Routes
-teamRouter.get('/get-team/:id', getOneTeam);
+teamRouter.get('/get-team/:id', validate(TeamSchema), getOneTeam);
 teamRouter.get('/get-all-teams', getAll);
 
 
@@ -26,7 +26,7 @@ teamRouter.post('/add-team', validate(TeamSchema), addTeam);
 teamRouter.put('/update-team/:id', validate(TeamSchema), updateTeam);
 
 // Delete Routes
-teamRouter.delete('/delete-team/:id', deleteOneTeam);
+teamRouter.delete('/delete-team/:id', validate(TeamSchema), deleteOneTeam);
 
 
 export default teamRouter;
