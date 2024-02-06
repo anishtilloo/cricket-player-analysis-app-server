@@ -8,75 +8,113 @@ datasource db {
 }
 
 model User {
-  id                  String            @id @unique @default(uuid())
-  name                String            @db.VarChar(255)
-  email               String            @unique
-  password            String
-  avatar              String?           @default("default.png")
-  backgroundImg       String?
-  role                RoleEnumType?     @default(user)
-  verificationCode    String?           @db.Text @unique
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  refreshTokens       RefreshToken[]
+  id                          String              @id @unique @default(uuid())
+  name                        String              @db.VarChar(255)
+  email                       String              @unique
+  password                    String
+  avatar                      String?             @default("default.png")
+  backgroundImg               String?
+  role                        RoleEnumType?       @default(USER)
+  verificationCode            String?             @db.Text @unique
+  isEmailVerified             Boolean  @default(false)
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @updatedAt
+  token                       Token[]
+  playingEleven               PlayingEleven[]
+  yourTeam                    YourTeam[]
 
   @@unique([email, verificationCode])
   @@index([email, verificationCode])
   @@map("Users")
 }
 
-model RefreshToken {
-  id          String   @id @unique @default(uuid())
-  hashedToken String
-  userId      String
-  revoked     Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Token {
+  id                          String              @id @unique @default(uuid())
+  token                       String
+  type                        TokenType
+  expires                     DateTime
+  blacklisted                 Boolean
+  createdAt                   DateTime            @default(now())
+  userId                      String                 
+  user                        User                @relation(fields: [userId], references: [id], onDelete: Cascade)  
 
-  @@map("RefreshTokens")
+  @@map("Tokens")
 }
 
 model Team {
-  id          Int      @id @default(autoincrement())
-  teamName    String
-  ownerName   String
-  coach       Json
-  netWorth    Float
-  teamLogo    String
-  players     Player[]
+  id                          String               @id @default(uuid())
+  teamName                    String               @db.VarChar(255)
+  ownerName                   String
+  coach                       Json?
+  netWorth                    Float?
+  teamLogo                    String?
+  players                     Player[]
+  playingElevens              PlayingEleven[]
 
   @@unique([id, teamName])
   @@map("Teams")
 }
 
 model Player {
-  id              Int             @id @default(autoincrement())
-  playerName      String
-  playerImg       String
-  characteristics String[]
-  height          Float
-  weight          Float
-  basePrise       Float
-  actualPrise     Float
-  fitnessScore    Float
-  injured         Json
-  analysis        Json
-  physicals       Json
-  mentalStats     Json
-  playerType      PLAYERTYPE
-  teamId          Int
-  teamName        String
-  team            Team            @relation(fields: [teamId, teamName], references: [id, teamName])
+  id                          String                @id @default(uuid())
+  playerName                  String                @db.VarChar(255)
+  playerImg                   String?
+  characteristics             String[]
+  height                      Float
+  weight                      Float
+  basePrise                   Float?
+  actualPrise                 Float?
+  fitnessScore                Float?
+  injured                     Json?
+  analysis                    Json?
+  physicals                   Json?
+  mentalStats                 Json?
+  playerType                  PLAYERTYPE
+  teamId                      String?
+  teamName                    String?
+  team                        Team?                  @relation(fields: [teamId, teamName], references: [id, teamName])
+  playingElevenId             String?
+  playingEleven               PlayingEleven?         @relation(fields: [playingElevenId], references: [id])
+  yourTeamId                  String?
+  yourTeam                    YourTeam?              @relation(fields: [yourTeamId], references: [id])
 
   @@map("Players")
 }
 
+model PlayingEleven {
+  id                          String                @id @unique @default(uuid())
+  playingElevenTeamName       String?               @db.VarChar(255) @default("playing-eleven")
+  players                     Player[]
+  userId                      String             
+  user                        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId                      String?
+  team                        Team?                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+
+  @@map("PlayingElevens")
+}
+
+model YourTeam {
+  id                          String                @id @unique @default(uuid())
+  yourTeamName                String?               @db.VarChar(255) @default("your-team")
+  players                     Player[]
+  userId                      String             
+  user                        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 enum RoleEnumType {
-  user
-  recruiter
-  teamOwner
-  admin
+  USER
+  RECRUITER
+  TEAMOWNER
+  ADMIN
+}
+
+enum TokenType {
+  ACCESS
+  REFRESH
+  RESET_PASSWORD
+  VERIFY_EMAIL
 }
 
 enum PLAYERTYPE {

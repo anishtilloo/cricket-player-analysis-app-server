@@ -1,13 +1,13 @@
 import prisma from "../../utils/prisma";
 
 export const listPlayers = async () => {
-    return prisma.player.findMany();
-}
+  return prisma.player.findMany();
+};
 
-export const getPlayer = async (id: number) => {
-    return prisma.player.findUnique({
-        where: {
-            id,
-        },
-    })
-}
+export const getPlayer = async (id: string) => {
+  return prisma.player.findUnique({
+    where: {
+      id,
+    },
+  });
+};

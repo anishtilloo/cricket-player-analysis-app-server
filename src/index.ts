@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 // import local files
 import PlayerRoutes from "./routes/player/player.route"; 
 import TeamRoutes from "./routes/team/team.route";
-import authRoutes from "./routes/auth/auth.route";
+import AuthRoutes from "./routes/auth/auth.route";
 import { devEnvironmentVariable } from "./utils/envConstants";
 
 // Load environment variables from .env file
@@ -27,7 +27,7 @@ app.use(cookieParser());
 // Load Routes
 app.use("/api/v1/player", PlayerRoutes);
 app.use("/api/v1/team", TeamRoutes);
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", AuthRoutes);
 
 app.get('/testing-route', (req, res) => {
     res.send("Testing Server is Working");

@@ -17,7 +17,7 @@ import { TeamSchema } from './team.schema';
 
 export const PlayerSchema : any = object({
     params: object({
-        id: OptionalField(NumberSchema())
+        id: OptionalField(StringMax50())
     }),
     body: object({
         playerName: StringMax50(),

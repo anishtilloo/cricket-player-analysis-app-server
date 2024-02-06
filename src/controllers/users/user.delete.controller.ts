@@ -1,22 +1,20 @@
 import { Request, Response } from "express";
-import { updateUserById } from "../../services/users/user.put.services";
+import { deleteUserById } from "../../services/users/user.delete.services";
 import httpStatus from "http-status";
 
-export async function updateTeam(req: Request, res: Response) {
+export async function deleteOneUser(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const userId = String(id);
-    const userBody = req.body;
-    const user = await updateUserById(userId, userBody);
+    await deleteUserById(userId);
     return res.status(httpStatus.OK).json({
       success: true,
-      message: "User Updated Successfully",
-      data: user,
+      message: "User Deleted Successfully",
     });
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong, user updation unsuccessful",
+      message: "Something went wrong",
       error: error,
     });
   }

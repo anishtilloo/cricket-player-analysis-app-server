@@ -13,7 +13,7 @@ export const listTeams = async () => {
     })
 }
 
-export const getTeam = async (id: number) => {
+export const getTeam = async (id: string) => {
     return prisma.team.findUnique({
         where: {
             id,

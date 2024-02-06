@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import addPlayerService  from "../../services/players/player.post.services"
 import { PlayerSchema } from '../../schemas/player.schema';
+import httpStatus from 'http-status';
 
 
 // POST request
@@ -9,13 +10,13 @@ export async function addPlayer(req: Request , res: Response) {
     try {
         const player = req.body;
         const result = await addPlayerService(player);
-        res.status(201).json({ 
+        res.status(httpStatus.CREATED).json({ 
             success: true, 
             message: "Player Added Successfully", 
             data: result 
         })
     } catch (error) {
-        res.status(500).json({ 
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ 
             success: true, 
             message: "Something went wrong", 
             error: error 
