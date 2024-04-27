@@ -10,22 +10,29 @@ import { deleteOnePlayer } from "../../controllers/players/player.delete.control
 // validation
 import { validate } from "../../middlewares/validate";
 import { PlayerSchema } from '../../schemas/player.schema';
+import { authenticate } from "../../middlewares/auth"; 
 
 const playerRouter = Router();
 
 // GET Routes
-playerRouter.get('/get-player/:id', validate(PlayerSchema),  getOnePlayer)
-playerRouter.get('/get-all-palyers', getAllPlayers)
+playerRouter.get(
+  "/get-player/:id",
+  authenticate,
+  validate(PlayerSchema),
+  getOnePlayer
+);
+playerRouter.get('/get-all-players', authenticate, getAllPlayers)
 
 
 // POST Routes
-playerRouter.post('/insert-player', addPlayer);
+playerRouter.post('/insert-player', authenticate, addPlayer);
 
 // PUT Routes
-playerRouter.put('/update-player/:id', validate(PlayerSchema), updatePlayer);
+playerRouter.put('/update-player/:id', authenticate, validate(PlayerSchema), updatePlayer);
 
 // Delete Routes
-playerRouter.delete('/player-delete/:id', deleteOnePlayer);
+playerRouter.delete('/player-delete/:id', authenticate, deleteOnePlayer);
 
 
 export default playerRouter;
+

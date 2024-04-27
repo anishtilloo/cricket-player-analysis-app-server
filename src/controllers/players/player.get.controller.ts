@@ -37,7 +37,18 @@ export async function getOnePlayer(req: Request, res: Response) {
 // get all players
 export async function getAllPlayers(req: Request, res: Response) {
   try {
+    console.log("players");
+    
     const players = await listPlayers();
+    console.log("players", players);
+    
+    if (!players) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "No Player exist in the DB",
+        error: null,
+      });
+    }
     return res.status(httpStatus.ACCEPTED).json({
       success: true,
       message: "Players Fetched Successfully",

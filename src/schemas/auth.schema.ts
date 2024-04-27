@@ -1,4 +1,4 @@
-import { object, z } from "zod";
+import { object, string, z } from "zod";
 import { EmailSchema, StringMax50 } from "./common.schema";
 
 export const addUserSchema: any = object({
@@ -6,6 +6,7 @@ export const addUserSchema: any = object({
     name: StringMax50(),
     email: EmailSchema(),
     password: StringMax50(),
+    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]),
   }),
 });
 
@@ -24,7 +25,7 @@ export const logoutSchema: any = object({
 
 export const refreshTokensSchema: any = object({
   body: object({
-    refreshToken: StringMax50(),
+    refreshToken: string(),
   }),
 });
 

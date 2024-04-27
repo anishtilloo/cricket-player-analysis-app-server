@@ -62,8 +62,8 @@ model Player {
   characteristics             String[]
   height                      Float
   weight                      Float
-  basePrise                   Float?
-  actualPrise                 Float?
+  basePrice                   Float?
+  actualPrice                 Float?
   fitnessScore                Float?
   injured                     Json?
   analysis                    Json?

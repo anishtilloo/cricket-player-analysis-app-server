@@ -14,10 +14,24 @@ import {
   refreshTokensSchema,
   resetPasswordSchema,
 } from "../../schemas/auth.schema";
+// import uplode from "../../middlewares/upload";
+// uplode.fields([
+//     {
+//         name: 'avatar',
+//         maxCount: 1,
+//     },
+//     {
+//         name: 'backgroundImg',
+//         maxCount: 1,
+//     }
+//   ]), 
 
 const authRouter = Router();
 
-authRouter.post("/register", validate(addUserSchema), addUser);
+authRouter.post("/register", 
+  validate(addUserSchema), 
+  addUser
+);
 authRouter.post("/login", validate(loginSchema), login);
 authRouter.post("/logout", validate(logoutSchema), logout);
 authRouter.post(

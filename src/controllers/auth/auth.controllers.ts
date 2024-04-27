@@ -16,7 +16,6 @@ export async function addUser(req: Request, res: Response) {
       "updatedAt",
     ]);
     const tokens = await tokenServices.generateAuthTokens(user);
-    console.log("token created");
 
     res.status(httpStatus.CREATED).json({
       success: true,
