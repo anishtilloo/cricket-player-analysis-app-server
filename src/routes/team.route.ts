@@ -10,12 +10,15 @@ import { deleteOneTeam } from "../controllers/teams/team.delete.controller";
 // validation
 import { validate } from "../middlewares/validate";
 import { TeamSchema } from "../schemas/team.schema";
+import { authenticate, authenticateAndCheckRole } from "../middlewares/auth"; 
 
 const teamRouter = Router();
 
+teamRouter.use(authenticate)
+
 // GET Routes
 teamRouter.get('/get-team/:id', validate(TeamSchema), getOneTeam);
-teamRouter.get('/get-all-teams', getAll);
+teamRouter.get('/get-all-teams',  getAll);
 
 
 // POST Routes
@@ -23,10 +26,10 @@ teamRouter.post('/add-team', validate(TeamSchema), addTeam);
 
 
 // PUT Routes
-teamRouter.put('/update-team/:id', validate(TeamSchema), updateTeam);
+teamRouter.put('/update-team/:id',  validate(TeamSchema), updateTeam);
 
 // Delete Routes
-teamRouter.delete('/delete-team/:id', validate(TeamSchema), deleteOneTeam);
+teamRouter.delete('/delete-team/:id', authenticateAndCheckRole, validate(TeamSchema), deleteOneTeam);
 
 
 export default teamRouter;

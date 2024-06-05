@@ -104,12 +104,12 @@ export async function refreshTokens(req: Request, res: Response) {
     
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong, refresh token not sent",
+      message: `Something went wrong, ${error}`,
     });
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Something went wrong, refresh token not sent"
-    );
+    // throw new ApiError(
+    //   httpStatus.BAD_REQUEST,
+    //   "Something went wrong, refresh token not sent"
+    // );
   }
 }
 

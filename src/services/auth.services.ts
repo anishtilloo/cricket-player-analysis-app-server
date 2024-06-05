@@ -67,7 +67,7 @@ const refreshAuth = async (
     await prisma.token.delete({ where: { id: userData.id } });
     return tokenService.generateAuthTokens({ id: String(userId) });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate");
+    throw new ApiError(httpStatus.UNAUTHORIZED, `Please authenticate -> ${error}`);
   }
 };
 
@@ -98,7 +98,7 @@ const resetPassword = async (
       where: { userId: user.id, type: TokenType.RESET_PASSWORD },
     });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Password reset failed");
+    throw new ApiError(httpStatus.UNAUTHORIZED, `Password reset failed -> ${error}`);
   }
 };
 
@@ -124,7 +124,7 @@ const verifyEmail = async (verifyEmailToken: string, secret: Secret): Promise<vo
       isEmailVerified: true,
     });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Email verification failed");
+    throw new ApiError(httpStatus.UNAUTHORIZED, `Email verification failed -> ${error}`);
   }
 };
 

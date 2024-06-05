@@ -1,6 +1,6 @@
 export interface TokenResponse {
   token: string;
-  expires: Date;
+  expires: Date | string;
 }
 
 export interface AuthTokensResponse {
@@ -11,5 +11,14 @@ export interface AuthTokensResponse {
 declare namespace Express {
   export interface Request {
     get: any;
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any,
+      extraString?: String,
+    }
   }
 }

@@ -67,8 +67,7 @@ const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
 
 const generateAccessToken = async (user: any) => {
 
-  const accessTokenExpires = moment().add(
-    devEnvironmentVariable.accessTokenExpiresIn,
+  const accessTokenExpires = moment().add('120',
     "minutes"
   );
   const accessToken = generateToken(
@@ -80,13 +79,12 @@ const generateAccessToken = async (user: any) => {
 
   return {
       token: accessToken,
-      expires: accessTokenExpires.toDate(),
+      expires: accessTokenExpires.toLocaleString() as unknown as string,
   };
 }
 
 const generateRefreshToken = async (user: any) => {
-  const refreshTokenExpires = moment().add(
-    devEnvironmentVariable.refreshTokenExpiresIn,
+  const refreshTokenExpires = moment().add('30',
     "days"
   );
   const refreshToken = generateToken(
@@ -103,7 +101,7 @@ const generateRefreshToken = async (user: any) => {
   );
   return {
       token: refreshToken,
-      expires: refreshTokenExpires.toDate(),
+      expires: refreshTokenExpires.toLocaleString() as unknown as string,
   };
 }
 
