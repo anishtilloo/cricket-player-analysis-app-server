@@ -1,15 +1,15 @@
 import { Router } from "express";
 
 // controllers
-import { getAll, getOneTeam } from "../../controllers/teams/team.get.controller";
-import { addTeam } from "../../controllers/teams/team.post.controller";
-import { updateTeam } from "../../controllers/teams/team.put.controller";
-import { deleteOneTeam } from "../../controllers/teams/team.delete.controller";
+import { getAll, getOneTeam } from "../controllers/teams/team.get.controller";
+import { addTeam } from "../controllers/teams/team.post.controller";
+import { updateTeam } from "../controllers/teams/team.put.controller";
+import { deleteOneTeam } from "../controllers/teams/team.delete.controller";
 
 // Middlewares
 // validation
-import { validate } from "../../middlewares/validate";
-import { TeamSchema } from "../../schemas/team.schema";
+import { validate } from "../middlewares/validate";
+import { TeamSchema } from "../schemas/team.schema";
 
 const teamRouter = Router();
 

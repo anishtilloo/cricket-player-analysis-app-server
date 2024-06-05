@@ -1,13 +1,15 @@
 import httpStatus from "http-status";
-import tokenService from "./token.services";
-import prisma from "../utils/prisma"; 
-import ApiError from "../utils/ApiError";
 import { TokenType, User } from "@prisma/client";
+import jwt, { Secret } from "jsonwebtoken";
+
+import tokenService from "./token.services";
 import { AuthTokensResponse } from "../types/response";
-import exclude from "../utils/exclude";
-import { encryptPassword, isPasswordMatch } from "../utils/encryption";
 import { getUserByEmail, getUserById } from "./users/user.get.services";
 import { updateUserById } from "./users/user.put.services";
+import prisma from "../utils/prisma"; 
+import ApiError from "../utils/ApiError";
+import exclude from "../utils/exclude";
+import { encryptPassword, isPasswordMatch } from "../utils/encryption";
 
 /**
  * Login with username and password
@@ -51,15 +53,18 @@ const logout = async (refreshToken: string): Promise<void> => {
  * @returns {Promise<AuthTokensResponse>}
  */
 const refreshAuth = async (
-  refreshToken: string
+  refreshToken: string,
+  secret: Secret
 ): Promise<AuthTokensResponse> => {
   try {
-    const refreshTokenData = await tokenService.verifyToken(
+    const userData = await tokenService.verifyToken(
       refreshToken,
-      TokenType.REFRESH
+      TokenType.REFRESH,
+      secret,
     );
-    const { userId } = refreshTokenData;
-    await prisma.token.delete({ where: { id: refreshTokenData.id } });
+
+    const { userId } = userData;
+    await prisma.token.delete({ where: { id: userData.id } });
     return tokenService.generateAuthTokens({ id: String(userId) });
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate");
@@ -74,12 +79,14 @@ const refreshAuth = async (
  */
 const resetPassword = async (
   resetPasswordToken: string,
-  newPassword: string
+  newPassword: string,
+  secret: Secret,
 ): Promise<void> => {
   try {
     const resetPasswordTokenData = await tokenService.verifyToken(
       resetPasswordToken,
-      TokenType.RESET_PASSWORD
+      TokenType.RESET_PASSWORD,
+      secret,
     );
     const user = await getUserById(resetPasswordTokenData.userId);
     if (!user) {
@@ -100,11 +107,12 @@ const resetPassword = async (
  * @param {string} verifyEmailToken
  * @returns {Promise<void>}
  */
-const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
+const verifyEmail = async (verifyEmailToken: string, secret: Secret): Promise<void> => {
   try {
     const verifyEmailTokenData = await tokenService.verifyToken(
       verifyEmailToken,
-      TokenType.VERIFY_EMAIL
+      TokenType.VERIFY_EMAIL,
+      secret,
     );
     await prisma.token.deleteMany({
       where: {

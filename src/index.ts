@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 // import local files
-import PlayerRoutes from "./routes/player/player.route"; 
-import TeamRoutes from "./routes/team/team.route";
-import AuthRoutes from "./routes/auth/auth.route";
+import PlayerRoutes from "./routes/player.route"; 
+import TeamRoutes from "./routes/team.route";
+import AuthRoutes from "./routes/auth.route";
 import { devEnvironmentVariable } from "./utils/envConstants";
 
 // Load environment variables from .env file

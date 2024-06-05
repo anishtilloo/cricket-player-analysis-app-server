@@ -1,10 +1,11 @@
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import moment, { Moment } from "moment";
 import httpStatus from "http-status";
-import { devEnvironmentVariable } from "../utils/envConstants";
-import ApiError from "../utils/ApiError";
 import { Token, TokenType } from "@prisma/client";
+
 import prisma from "../utils/prisma";
+import ApiError from "../utils/ApiError";
+import { devEnvironmentVariable } from "../utils/envConstants";
 import { AuthTokensResponse } from "../types/response";
 import { getUserByEmail } from "./users/user.get.services";
 
@@ -12,7 +13,7 @@ const generateToken = (
   userId: string,
   expires: Moment,
   type: TokenType,
-  secret: any = devEnvironmentVariable.jwtAccessSecret
+  secret: Secret
 ): string => {
   const payload = {
     sub: userId,
@@ -42,8 +43,9 @@ const saveToken = async (
   return createdToken;
 };
 
-const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
-  const payload = jwt.verify(token, devEnvironmentVariable.jwtAccessSecret);
+const verifyToken = async (token: string, type: TokenType, secret: Secret): Promise<Token> => {
+
+  const payload = jwt.verify(token, secret);
   const userId = String(payload.sub);
   const tokenData = await prisma.token.findFirst({
     where: { token, type, userId, blacklisted: false },
@@ -55,6 +57,16 @@ const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
 };
 
 const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
+  const accessToken = await generateAccessToken(user);
+  const refreshToken = await generateRefreshToken(user);
+  return {
+    access: accessToken,
+    refresh: refreshToken
+  };
+};
+
+const generateAccessToken = async (user: any) => {
+
   const accessTokenExpires = moment().add(
     devEnvironmentVariable.accessTokenExpiresIn,
     "minutes"
@@ -62,9 +74,17 @@ const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
   const accessToken = generateToken(
     String(user.id),
     accessTokenExpires,
-    TokenType.ACCESS
+    TokenType.ACCESS,
+    devEnvironmentVariable.jwtAccessSecret as unknown as Secret
   );
 
+  return {
+      token: accessToken,
+      expires: accessTokenExpires.toDate(),
+  };
+}
+
+const generateRefreshToken = async (user: any) => {
   const refreshTokenExpires = moment().add(
     devEnvironmentVariable.refreshTokenExpiresIn,
     "days"
@@ -72,7 +92,8 @@ const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
   const refreshToken = generateToken(
     String(user.id),
     refreshTokenExpires,
-    TokenType.REFRESH
+    TokenType.REFRESH,
+    devEnvironmentVariable.jwtRefreshSecret
   );
   await saveToken(
     refreshToken,
@@ -80,18 +101,11 @@ const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
     refreshTokenExpires,
     TokenType.REFRESH
   );
-
   return {
-    access: {
-      token: accessToken,
-      expires: accessTokenExpires.toDate(),
-    },
-    refresh: {
       token: refreshToken,
       expires: refreshTokenExpires.toDate(),
-    },
   };
-};
+}
 
 const generateResetPasswordToken = async (email: string): Promise<string> => {
   const user = await getUserByEmail(email);
@@ -105,7 +119,8 @@ const generateResetPasswordToken = async (email: string): Promise<string> => {
   const resetPasswordToken = generateToken(
     user.id,
     expires,
-    TokenType.RESET_PASSWORD
+    TokenType.RESET_PASSWORD,
+    devEnvironmentVariable.jwtAccessSecret,
   );
   await saveToken(
     resetPasswordToken,
@@ -126,7 +141,8 @@ const generateVerifyEmailToken = async (user: {
   const verifyEmailToken = generateToken(
     String(user.id),
     expires,
-    TokenType.VERIFY_EMAIL
+    TokenType.VERIFY_EMAIL,
+    devEnvironmentVariable.jwtAccessSecret,
   );
   await saveToken(
     verifyEmailToken,

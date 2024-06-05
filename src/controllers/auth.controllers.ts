@@ -1,10 +1,11 @@
 import httpStatus from "http-status";
-import authServices from "../../services/auth.services";
-import tokenServices from "../../services/token.services";
-import exclude from "../../utils/exclude";
+import authServices from "../services/auth.services";
+import tokenServices from "../services/token.services";
+import exclude from "../utils/exclude";
 import { Request, Response } from "express";
-import createUser from "../../services/users/user.post.services";
-import ApiError from "../../utils/ApiError";
+import createUser from "../services/users/user.post.services";
+import ApiError from "../utils/ApiError";
+import { devEnvironmentVariable } from "../utils/envConstants";
 
 export async function addUser(req: Request, res: Response) {
   try {
@@ -92,20 +93,22 @@ export async function logout(req: Request, res: Response) {
 
 export async function refreshTokens(req: Request, res: Response) {
   try {
-    const tokens = await authServices.refreshAuth(req.body.refreshToken);
+    const tokens = await authServices.refreshAuth(req.body.refreshToken as string, devEnvironmentVariable.jwtRefreshSecret);
     res.status(httpStatus.CREATED).json({
       success: true,
       tokens: tokens,
       message: "The refresh token is sent",
     });
   } catch (error) {
+    console.log("error", error);
+    
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
       message: "Something went wrong, refresh token not sent",
     });
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "Something went wrong, the user is not added and tokens and not generated"
+      "Something went wrong, refresh token not sent"
     );
   }
 }
@@ -136,7 +139,8 @@ export async function resetPassword(req: Request, res: Response) {
   try {
     await authServices.resetPassword(
       req.query.token as string,
-      req.body.password
+      req.body.password,
+      devEnvironmentVariable.jwtAccessSecret,
     );
     res.status(httpStatus.CREATED).json({
       success: true,

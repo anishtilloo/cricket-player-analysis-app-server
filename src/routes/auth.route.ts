@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { validate } from "../../middlewares/validate";
+import { validate } from "../middlewares/validate";
 import {
   addUser,
   login,
   logout,
   refreshTokens,
   resetPassword,
-} from "../../controllers/auth/auth.controllers";
+} from "../controllers/auth.controllers";
 import {
   addUserSchema,
   loginSchema,
   logoutSchema,
   refreshTokensSchema,
   resetPasswordSchema,
-} from "../../schemas/auth.schema";
+} from "../schemas/auth.schema";
 // import uplode from "../../middlewares/upload";
 // uplode.fields([
 //     {

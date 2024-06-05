@@ -1,16 +1,16 @@
 import { Router } from "express";
 
 // controllers
-import { addPlayer } from "../../controllers/players/player.post.controller";
-import { getAllPlayers, getOnePlayer } from "../../controllers/players/player.get.controller";
-import { updatePlayer } from "../../controllers/players/player.put.controller";
-import { deleteOnePlayer } from "../../controllers/players/player.delete.controller";
+import { addPlayer } from "../controllers/players/player.post.controller";
+import { getAllPlayers, getOnePlayer } from "../controllers/players/player.get.controller";
+import { updatePlayer } from "../controllers/players/player.put.controller";
+import { deleteOnePlayer } from "../controllers/players/player.delete.controller";
 
 // Middlewares
 // validation
-import { validate } from "../../middlewares/validate";
-import { PlayerSchema } from '../../schemas/player.schema';
-import { authenticate } from "../../middlewares/auth"; 
+import { validate } from "../middlewares/validate";
+import { PlayerSchema } from '../schemas/player.schema';
+import { authenticate } from "../middlewares/auth"; 
 
 const playerRouter = Router();
 
