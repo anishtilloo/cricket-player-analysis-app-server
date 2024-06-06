@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // controllers
-import { getAll, getOneTeam } from "../controllers/teams/team.get.controller";
+import { getAllWithPagenation, getOneTeam } from "../controllers/teams/team.get.controller";
 import { addTeam } from "../controllers/teams/team.post.controller";
 import { updateTeam } from "../controllers/teams/team.put.controller";
 import { deleteOneTeam } from "../controllers/teams/team.delete.controller";
@@ -14,11 +14,11 @@ import { authenticate, authenticateAndCheckRole } from "../middlewares/auth";
 
 const teamRouter = Router();
 
-teamRouter.use(authenticate)
+teamRouter.use(authenticate);
 
 // GET Routes
-teamRouter.get('/get-team/:id', validate(TeamSchema), getOneTeam);
-teamRouter.get('/get-all-teams',  getAll);
+teamRouter.get('/get-team/:id', getOneTeam);
+teamRouter.get('/get-all-teams',  getAllWithPagenation);
 
 
 // POST Routes
