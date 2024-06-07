@@ -6,7 +6,7 @@ export const addUserSchema: any = object({
     name: StringMax50(),
     email: EmailSchema(),
     password: StringMax50(),
-    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]),
+    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]).default('USER'),
   }),
 });
 
@@ -47,5 +47,12 @@ export const resetPasswordSchema: any = object({
 export const verifyEmailSchema: any = object({
   query: object({
     token: StringMax50(),
+  }),
+});
+
+export const assignRoleSchema: any = object({
+  body: object({
+    userId: StringMax50(),
+    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]).default('USER'),
   }),
 });
