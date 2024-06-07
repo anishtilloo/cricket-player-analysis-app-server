@@ -1,7 +1,8 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, RoleEnumType } from "@prisma/client";
 import prisma from "../../utils/prisma";
-import ApiError from "../../utils/ApiError";
 import httpStatus from "http-status";
+
+import ApiError from "../../utils/ApiError";
 import { getUserByEmail, getUserById } from "./user.get.services";
 
 export const updateUserById = async (
@@ -21,5 +22,3 @@ export const updateUserById = async (
     });
     return updatedUser;
 };
-
-export default updateUserById;

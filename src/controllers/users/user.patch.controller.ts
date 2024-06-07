@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { getUserById } from "../../services/users/user.get.services";
-import { assignRoleToUser } from "../../services/users/user.put.services";
+import { assignRoleToUser } from "../../services/users/user.patch.services";
 import ApiError from "../../utils/ApiError";
 
 // PATCH request
