@@ -11,12 +11,6 @@ import ApiError from "../utils/ApiError";
 import exclude from "../utils/exclude";
 import { encryptPassword, isPasswordMatch } from "../utils/encryption";
 
-/**
- * Login with username and password
- * @param {string} email
- * @param {string} password
- * @returns {Promise<Omit<User, 'password'>>}
- */
 const loginUserWithEmailAndPassword = async (
   email: string,
   password: string
@@ -28,11 +22,6 @@ const loginUserWithEmailAndPassword = async (
   return exclude(user, ["password"]);
 };
 
-/**
- * Logout
- * @param {string} refreshToken
- * @returns {Promise<void>}
- */
 const logout = async (refreshToken: string): Promise<void> => {
   const refreshTokenData = await prisma.token.findFirst({
     where: {
@@ -47,11 +36,6 @@ const logout = async (refreshToken: string): Promise<void> => {
   await prisma.token.delete({ where: { id: refreshTokenData.id } });
 };
 
-/**
- * Refresh auth tokens
- * @param {string} refreshToken
- * @returns {Promise<AuthTokensResponse>}
- */
 const refreshAuth = async (
   refreshToken: string,
   secret: Secret
@@ -71,12 +55,6 @@ const refreshAuth = async (
   }
 };
 
-/**
- * Reset password
- * @param {string} resetPasswordToken
- * @param {string} newPassword
- * @returns {Promise<void>}
- */
 const resetPassword = async (
   resetPasswordToken: string,
   newPassword: string,
@@ -102,11 +80,6 @@ const resetPassword = async (
   }
 };
 
-/**
- * Verify email
- * @param {string} verifyEmailToken
- * @returns {Promise<void>}
- */
 const verifyEmail = async (verifyEmailToken: string, secret: Secret): Promise<void> => {
   try {
     const verifyEmailTokenData = await tokenService.verifyToken(
