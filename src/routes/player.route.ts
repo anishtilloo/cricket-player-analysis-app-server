@@ -32,7 +32,7 @@ playerRouter.post('/insert-player', addPlayer);
 playerRouter.put('/update-player/:id', validate(PlayerSchema), updatePlayer);
 
 // Delete Routes
-playerRouter.delete('/player-delete/:id', authenticateAndCheckRole, deleteOnePlayer);
+playerRouter.delete('/player-delete/:id', authenticateAndCheckRole('ADMIN'), deleteOnePlayer);
 
 
 export default playerRouter;

@@ -29,7 +29,7 @@ teamRouter.post('/add-team', validate(TeamSchema), addTeam);
 teamRouter.put('/update-team/:id',  validate(TeamSchema), updateTeam);
 
 // Delete Routes
-teamRouter.delete('/delete-team/:id', authenticateAndCheckRole, validate(TeamSchema), deleteOneTeam);
+teamRouter.delete('/delete-team/:id', authenticateAndCheckRole('ADMIN'), validate(TeamSchema), deleteOneTeam);
 
 
 export default teamRouter;
