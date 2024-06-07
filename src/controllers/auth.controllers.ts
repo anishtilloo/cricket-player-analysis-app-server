@@ -4,7 +4,6 @@ import tokenServices from "../services/token.services";
 import exclude from "../utils/exclude";
 import { Request, Response } from "express";
 import createUser from "../services/users/user.post.services";
-import ApiError from "../utils/ApiError";
 import { devEnvironmentVariable } from "../utils/envConstants";
 
 export async function addUser(req: Request, res: Response) {
@@ -31,13 +30,9 @@ export async function addUser(req: Request, res: Response) {
       user: null,
       tokens: null,
       message:
-        "Something is wrong, the user is not added and tokens and not generated",
+        `Something is wrong -> ${error}`,
       error: error,
     });
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Something went wrong, the user is not added and tokens and not generated"
-    );
   }
 }
 
@@ -61,13 +56,9 @@ export async function login(req: Request, res: Response) {
       success: false,
       user: null,
       tokens: null,
-      message: "Something is wrong, the user is not authorised",
+      message: `Something is wrong, the user is not authorised -> ${error}`,
       error: null,
     });
-    throw new ApiError(
-      httpStatus.UNAUTHORIZED,
-      "Something went wrong, the user is not authorised"
-    );
   }
 }
 
@@ -82,12 +73,8 @@ export async function logout(req: Request, res: Response) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
       message:
-        "Something went wrong, the user logging out has been unsuccessful",
+        `Something went wrong, -> ${error}`,
     });
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Something went wrong, the user logging out has been unsuccessful"
-    );
   }
 }
 
@@ -100,16 +87,10 @@ export async function refreshTokens(req: Request, res: Response) {
       message: "The refresh token is sent",
     });
   } catch (error) {
-    console.log("error", error);
-    
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
       message: `Something went wrong, ${error}`,
     });
-    // throw new ApiError(
-    //   httpStatus.BAD_REQUEST,
-    //   "Something went wrong, refresh token not sent"
-    // );
   }
 }
 
@@ -149,12 +130,8 @@ export async function resetPassword(req: Request, res: Response) {
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong, the request is not sent",
+      message: `Something went wrong -> ${error}`,
     });
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Something went wrong, the user is not added and tokens and not generated"
-    );
   }
 }
 

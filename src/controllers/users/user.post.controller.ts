@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import createUserService from "../../services/users/user.post.services";
 import httpStatus from "http-status";
+
+import createUserService from "../../services/users/user.post.services";
 
 // POST request
 // create new team in the DB
@@ -16,7 +17,7 @@ export async function addUser(req: Request, res: Response) {
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong",
+      message: `Something went wrong -> ${error}`,
       error: error,
     });
   }

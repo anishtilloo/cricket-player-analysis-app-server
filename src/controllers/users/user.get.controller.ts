@@ -10,29 +10,22 @@ export async function getUserUsingId(req: Request, res: Response) {
     const id = req.params.id;
     const userId = String(id);
     const user = await getUserById(userId);
-    if (user) {
-      return res.status(200).json({
-        success: true,
-        message: "User Fetched Successfully",
-        data: user,
-      });
-    } else {
-      return res.status(404).json({
-        success: false,
-        message: "User does not exist in the DB",
-      });
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "No User Found")
     }
+    return res.status(200).json({
+      success: true,
+      message: "User Fetched Successfully",
+      data: user,
+    });
+
   } catch (error) {
     res.status(httpStatus.NOT_FOUND).json({
       success: true,
-      message: "Something went wrong",
+      message: `Something went wrong -> ${error}`,
       error: error,
     });
-    throw new ApiError(
-      httpStatus.NOT_FOUND,
-      "Something went wrong, the user does not exist in the db"
-    );
-}
+  }
 }
 
 // GET request
@@ -53,7 +46,7 @@ export async function queryUser(req: Request, res: Response) {
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong",
+      message: `Something went wrong -> ${error}`,
       error: error,
     });
   }
@@ -66,27 +59,23 @@ export async function getUserUsingEmail(req: Request, res: Response) {
     const email = req.body.email;
     // const userId = String(email);
     const user = await getUserByEmail(email);
-    if (user) {
-      return res.status(httpStatus.CREATED).json({
-        success: true,
-        message: "User Fetched Successfully",
-        data: user,
-      });
-    } else {
-      return res.status(httpStatus.NOT_FOUND).json({
-        success: false,
-        message: "User does not exist in the DB",
-      });
-    }
+    if (!user) {
+      throw new ApiError(
+        httpStatus.NOT_FOUND,
+        "Something went wrong, the user does not exist in the db"
+      );
+    } 
+    return res.status(httpStatus.CREATED).json({
+      success: true,
+      message: "User Fetched Successfully",
+      data: user,
+    });
   } catch (error) {
     res.status(httpStatus.NOT_FOUND).json({
       success: true,
-      message: "Something went wrong",
+      message: `Something went wrong -> ${error}`,
       error: error,
     });
-    throw new ApiError(
-      httpStatus.NOT_FOUND,
-      "Something went wrong, the user does not exist in the db"
-    );
+    
 }
 }
