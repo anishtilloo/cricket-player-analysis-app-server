@@ -1,19 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { Secret } from "jsonwebtoken";
-
-import { getUserById } from "../services/users/user.get.services";
+import { RoleEnumType } from "@prisma/client";
 import httpStatus from "http-status";
 
-export function authenticateAndCheckRole (req: Request, res: Response, next: NextFunction) {
-  if (req.user?.role === 'ADMIN') {
-    next();
-  } else {
-    res.status(httpStatus.UNAUTHORIZED).json({
-      success: false,
-      message: `Unauthorized to Access this resource`,
-    })
-    return;
-  } 
+import { getUserById } from "../services/users/user.get.services";
+
+export function authenticateAndCheckRole(role: RoleEnumType) {
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (req.user?.role === role) {
+        next();
+      } else {
+        res.status(httpStatus.UNAUTHORIZED).json({
+          success: false,
+          message: `Unauthorized to Access this resource`,
+        })
+        return;
+      } 
+    }
 }
 
 
