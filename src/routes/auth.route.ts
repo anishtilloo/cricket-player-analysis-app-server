@@ -53,7 +53,7 @@ authRouter.post(
 authRouter.patch(
     "/assign-role", 
     authenticate, 
-    authenticateAndCheckRole('ADMIN'), 
+    authenticateAndCheckRole(['ADMIN']), 
     validate(assignRoleSchema),
     assignRole
 );

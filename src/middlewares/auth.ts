@@ -5,9 +5,9 @@ import httpStatus from "http-status";
 
 import { getUserById } from "../services/users/user.get.services";
 
-export function authenticateAndCheckRole(role: RoleEnumType) {
+export function authenticateAndCheckRole(role: Array<RoleEnumType>) {
     return (req: Request, res: Response, next: NextFunction) => {
-      if (req.user?.role === role) {
+      if (role.includes(req.user?.role)) {
         next();
       } else {
         res.status(httpStatus.UNAUTHORIZED).json({

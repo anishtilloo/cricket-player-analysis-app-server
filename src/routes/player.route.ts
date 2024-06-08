@@ -22,17 +22,33 @@ playerRouter.get(
   validate(PlayerSchema),
   getOnePlayer
 );
-playerRouter.get('/get-all-players', getAllPlayers)
 
+playerRouter.get(
+  '/get-all-players', 
+  getAllPlayers
+)
 
 // POST Routes
-playerRouter.post('/insert-player', addPlayer);
+playerRouter.post(
+  '/insert-player', 
+  authenticateAndCheckRole(['TEAMOWNER', 'ADMIN']),
+  addPlayer
+);
 
 // PUT Routes
-playerRouter.put('/update-player/:id', validate(PlayerSchema), updatePlayer);
+playerRouter.put(
+  '/update-player/:id', 
+  authenticateAndCheckRole(['TEAMOWNER', 'ADMIN']),
+  validate(PlayerSchema),
+  updatePlayer
+);
 
 // Delete Routes
-playerRouter.delete('/player-delete/:id', authenticateAndCheckRole('ADMIN'), deleteOnePlayer);
+playerRouter.delete(
+  '/player-delete/:id', 
+  authenticateAndCheckRole(['ADMIN']), 
+  deleteOnePlayer
+);
 
 
 export default playerRouter;

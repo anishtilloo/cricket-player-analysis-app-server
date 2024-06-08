@@ -17,19 +17,39 @@ const teamRouter = Router();
 teamRouter.use(authenticate);
 
 // GET Routes
-teamRouter.get('/get-team/:id', getOneTeam);
-teamRouter.get('/get-all-teams',  getAllWithPagenation);
+teamRouter.get(
+    '/get-team/:id', 
+    getOneTeam
+);
 
+teamRouter.get(
+    '/get-all-teams',  
+    getAllWithPagenation
+);
 
 // POST Routes
-teamRouter.post('/add-team', validate(TeamSchema), addTeam);
-
+teamRouter.post(
+    '/add-team',
+    authenticateAndCheckRole(['ADMIN', 'TEAMOWNER']),
+    validate(TeamSchema), 
+    addTeam
+);
 
 // PUT Routes
-teamRouter.put('/update-team/:id',  validate(TeamSchema), updateTeam);
+teamRouter.put(
+    '/update-team/:id',
+    authenticateAndCheckRole(['ADMIN', 'TEAMOWNER']),
+    validate(TeamSchema), 
+    updateTeam
+);
 
 // Delete Routes
-teamRouter.delete('/delete-team/:id', authenticateAndCheckRole('ADMIN'), validate(TeamSchema), deleteOneTeam);
+teamRouter.delete(
+    '/delete-team/:id', 
+    authenticateAndCheckRole(['ADMIN']), 
+    validate(TeamSchema), 
+    deleteOneTeam
+);
 
 
 export default teamRouter;
