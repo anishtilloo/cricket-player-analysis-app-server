@@ -34,5 +34,5 @@ app.get('/testing-route', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`\u{1F680} Server started on port ${PORT} \u{1F3AF}`); 
+    console.log(`\u{1F680} Server started on port ${PORT} \u{1F3AF}`);
 })
