@@ -10,7 +10,8 @@ import ApiError from '../../utils/ApiError';
 export async function addTeam(req: Request , res: Response) {
     try {
         const team = req.body;
-        const teamExist = await getTeamUsingName(team.name);
+        
+        const teamExist = await getTeamUsingName(team.teamName);
         
         if (teamExist) {
             throw new ApiError(httpStatus.BAD_REQUEST, "Please select a unique name for your team");
