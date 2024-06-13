@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import { TokenType, User } from "@prisma/client";
-import jwt, { Secret } from "jsonwebtoken";
+import { Secret } from "jsonwebtoken";
 
 import tokenService from "./token.services";
 import { AuthTokensResponse } from "../types/response";
