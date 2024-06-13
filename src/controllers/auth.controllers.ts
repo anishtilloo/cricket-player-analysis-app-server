@@ -1,20 +1,33 @@
 import httpStatus from "http-status";
+import { Request, Response } from "express";
+
 import authServices from "../services/auth.services";
 import tokenServices from "../services/token.services";
-import exclude from "../utils/exclude";
-import { Request, Response } from "express";
+import { getUserByEmail } from "../services/users/user.get.services";
 import createUser from "../services/users/user.post.services";
+
+import exclude from "../utils/exclude";
 import { devEnvironmentVariable } from "../utils/envConstants";
+import ApiError from "../utils/ApiError";
 
 export async function addUser(req: Request, res: Response) {
   try {
-    const user = await createUser(req.body);
+    const reqBody = req.body;
+    const existingUserWithSameEmail = await getUserByEmail(reqBody.email);
+    
+    if (existingUserWithSameEmail) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
+    }
+    
+    const user = await createUser(reqBody);
 
+    // remove password, createdAt and updatedAt are removed from the response in below function
     const userWithoutPassword = exclude(user, [
       "password",
       "createdAt",
       "updatedAt",
     ]);
+
     const tokens = await tokenServices.generateAuthTokens(user);
 
     res.status(httpStatus.CREATED).json({
@@ -43,7 +56,9 @@ export async function login(req: Request, res: Response) {
       email,
       password
     );
+
     const tokens = await tokenServices.generateAuthTokens(user);
+    
     res.status(httpStatus.CREATED).json({
       success: true,
       data: user,
@@ -146,14 +161,3 @@ export async function resetPassword(req: Request, res: Response) {
 //   await authService.verifyEmail(req.query.token as string);
 //   res.status(httpStatus.NO_CONTENT).send();
 // });
-
-// export default {
-//   // register,
-//   //   login,
-//   //   logout,
-//   //   refreshTokens,
-//   //   forgotPassword,
-//   //   resetPassword,
-//   //   sendVerificationEmail,
-//   //   verifyEmail,
-// };

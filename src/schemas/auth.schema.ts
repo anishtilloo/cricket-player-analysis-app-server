@@ -1,7 +1,7 @@
 import { object, string, z } from "zod";
 import { EmailSchema, StringMax50 } from "./common.schema";
 
-export const addUserSchema: any = object({
+export const addUserSchema = object({
   body: object({
     name: StringMax50(),
     email: EmailSchema(),
@@ -10,32 +10,32 @@ export const addUserSchema: any = object({
   }),
 });
 
-export const loginSchema: any = object({
+export const loginSchema = object({
   body: object({
     email: EmailSchema(),
     password: StringMax50(),
   }),
 });
 
-export const logoutSchema: any = object({
+export const logoutSchema = object({
   body: object({
     refreshToken: StringMax50(),
   }),
 });
 
-export const refreshTokensSchema: any = object({
+export const refreshTokensSchema = object({
   body: object({
     refreshToken: string(),
   }),
 });
 
-export const forgotPasswordSchema: any = object({
+export const forgotPasswordSchema = object({
   body: object({
     email: EmailSchema(),
   }),
 });
 
-export const resetPasswordSchema: any = object({
+export const resetPasswordSchema = object({
   query: object({
     token: StringMax50(),
   }),
@@ -44,13 +44,13 @@ export const resetPasswordSchema: any = object({
   }),
 });
 
-export const verifyEmailSchema: any = object({
+export const verifyEmailSchema = object({
   query: object({
     token: StringMax50(),
   }),
 });
 
-export const assignRoleSchema: any = object({
+export const assignRoleSchema = object({
   body: object({
     userId: StringMax50(),
     role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]).default('USER'),
