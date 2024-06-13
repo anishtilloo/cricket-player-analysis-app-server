@@ -62,18 +62,6 @@ authRouter.patch(
 //   "/forgot-password",
 //   validate(forgotPasswordSchema),
 //   forgotPassword
-// );
-
-// import uplode from "../../middlewares/upload";
-// uplode.fields([
-//     {
-//         name: 'avatar',
-//         maxCount: 1,
-//     },
-//     {
-//         name: 'backgroundImg',
-//         maxCount: 1,
-//     }
-//   ]), 
+// ); 
 
 export default authRouter;
