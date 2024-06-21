@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import { TokenType, User } from "@prisma/client";
+import { Token, TokenType, User } from "@prisma/client";
 import { Secret } from "jsonwebtoken";
 
 import tokenService from "./token.services";
@@ -41,9 +41,8 @@ const refreshAuth = async (
   secret: Secret
 ): Promise<AuthTokensResponse> => {
   try {
-    const userData = await tokenService.verifyToken(
+    const userData = await tokenService.verifyToken<Token>(
       refreshToken,
-      TokenType.REFRESH,
       secret,
     );
 
@@ -55,51 +54,49 @@ const refreshAuth = async (
   }
 };
 
-const resetPassword = async (
-  resetPasswordToken: string,
-  newPassword: string,
-  secret: Secret,
-): Promise<void> => {
-  try {
-    const resetPasswordTokenData = await tokenService.verifyToken(
-      resetPasswordToken,
-      TokenType.RESET_PASSWORD,
-      secret,
-    );
-    const user = await getUserById(resetPasswordTokenData.userId);
-    if (!user) {
-      throw new Error();
-    }
-    const encryptedPassword = await encryptPassword(newPassword);
-    await updateUserById(user.id, { password: encryptedPassword });
-    await prisma.token.deleteMany({
-      where: { userId: user.id, type: TokenType.RESET_PASSWORD },
-    });
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, `Password reset failed -> ${error}`);
-  }
-};
+// const resetPassword = async (
+//   resetPasswordToken: string,
+//   newPassword: string,
+//   secret: Secret,
+// ): Promise<void> => {
+//   try {
+//     const resetPasswordTokenData = await tokenService.verifyToken(
+//       resetPasswordToken,
+//       secret,
+//     );
+//     const user = await getUserById(resetPasswordTokenData.userId);
+//     if (!user) {
+//       throw new Error();
+//     }
+//     const encryptedPassword = await encryptPassword(newPassword);
+//     await updateUserById(user.id, { password: encryptedPassword });
+//     await prisma.token.deleteMany({
+//       where: { userId: user.id, type: TokenType.RESET_PASSWORD },
+//     });
+//   } catch (error) {
+//     throw new ApiError(httpStatus.UNAUTHORIZED, `Password reset failed -> ${error}`);
+//   }
+// };
 
-const verifyEmail = async (verifyEmailToken: string, secret: Secret): Promise<void> => {
-  try {
-    const verifyEmailTokenData = await tokenService.verifyToken(
-      verifyEmailToken,
-      TokenType.VERIFY_EMAIL,
-      secret,
-    );
-    await prisma.token.deleteMany({
-      where: {
-        userId: verifyEmailTokenData.userId,
-        type: TokenType.VERIFY_EMAIL,
-      },
-    });
-    await updateUserById(verifyEmailTokenData.userId, {
-      isEmailVerified: true,
-    });
-  } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, `Email verification failed -> ${error}`);
-  }
-};
+// const verifyEmail = async (verifyEmailToken: string, secret: Secret): Promise<void> => {
+//   try {
+//     const verifyEmailTokenData = await tokenService.verifyToken(
+//       verifyEmailToken,
+//       secret,
+//     );
+//     await prisma.token.deleteMany({
+//       where: {
+//         userId: verifyEmailTokenData.userId,
+//         type: TokenType.VERIFY_EMAIL,
+//       },
+//     });
+//     await updateUserById(verifyEmailTokenData.userId, {
+//       isEmailVerified: true,
+//     });
+//   } catch (error) {
+//     throw new ApiError(httpStatus.UNAUTHORIZED, `Email verification failed -> ${error}`);
+//   }
+// };
 
 export default {
   loginUserWithEmailAndPassword,
@@ -107,6 +104,6 @@ export default {
   encryptPassword,
   logout,
   refreshAuth,
-  resetPassword,
-  verifyEmail,
+  // resetPassword,
+  // verifyEmail,
 };

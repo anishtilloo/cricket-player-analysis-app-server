@@ -8,7 +8,7 @@ import {
   login,
   logout,
   refreshTokens,
-  resetPassword,
+  // resetPassword,
 } from "../controllers/auth.controllers";
 import {
   addUserSchema,
@@ -44,11 +44,12 @@ authRouter.post(
   refreshTokens
 );
 
-authRouter.post(
-  "/reset-password",
-  validate(resetPasswordSchema),
-  resetPassword
-);
+// authRouter.post(
+//   "/reset-password",
+//   authenticate,
+//   validate(resetPasswordSchema),
+//   resetPassword
+// );
 
 authRouter.patch(
     "/assign-role", 
