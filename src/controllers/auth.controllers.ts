@@ -131,24 +131,24 @@ export async function refreshTokens(req: Request, res: Response) {
 //     }
 // }
 
-export async function resetPassword(req: Request, res: Response) {
-  try {
-    await authServices.resetPassword(
-      req.query.token as string,
-      req.body.password,
-      devEnvironmentVariable.jwtAccessSecret,
-    );
-    res.status(httpStatus.CREATED).json({
-      success: true,
-      message: "The reset password is sent",
-    });
-  } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      success: false,
-      message: `Something went wrong -> ${error}`,
-    });
-  }
-}
+// export async function resetPassword(req: Request, res: Response) {
+//   try {
+//     await authServices.resetPassword(
+//       req.query.token as string,
+//       req.body.password,
+//       devEnvironmentVariable.jwtAccessSecret,
+//     );
+//     res.status(httpStatus.CREATED).json({
+//       success: true,
+//       message: "The reset password is sent",
+//     });
+//   } catch (error) {
+//     res.status(httpStatus.BAD_REQUEST).json({
+//       success: false,
+//       message: `Something went wrong -> ${error}`,
+//     });
+//   }
+// }
 
 // const sendVerificationEmail = catchAsync(async (req, res) => {
 //   const user = req.user as User;
