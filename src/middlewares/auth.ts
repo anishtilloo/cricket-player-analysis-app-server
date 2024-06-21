@@ -4,19 +4,20 @@ import { RoleEnumType } from "@prisma/client";
 import httpStatus from "http-status";
 
 import { getUserById } from "../services/users/user.get.services";
+import tokenServices from "../services/token.services";
 
 export function authenticateAndCheckRole(role: Array<RoleEnumType>) {
-    return (req: Request, res: Response, next: NextFunction) => {
-      if (role.includes(req.user?.role)) {
-        next();
-      } else {
-        res.status(httpStatus.UNAUTHORIZED).json({
-          success: false,
-          message: `Unauthorized to Access this resource`,
-        })
-        return;
-      } 
-    }
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (role.includes(req.user?.role)) {
+      next();
+    } else {
+      res.status(httpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: `Unauthorized to Access this resource`,
+      })
+      return;
+    } 
+  }
 }
 
 
@@ -31,7 +32,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   }
   try {
     const user = await chekcAuth(token);
-    
+
     if (!user) {
       res.status(404).json({
         success: false,
@@ -51,8 +52,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
 async function chekcAuth(token: string) {
   const accessSecret = process.env.JWT_ACCESS_SECRET as unknown as Secret;
-  const payload = jwt.verify(token, accessSecret);
-    const userId = String(payload.sub);
-    const user = await getUserById(userId);
-    return user;
+  const userId = await tokenServices.verifyToken<string>(token, accessSecret);
+  const user = await getUserById(userId);
+  return user;
 }
