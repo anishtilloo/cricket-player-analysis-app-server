@@ -10,7 +10,7 @@ cloudinary.config({
 const uploadOnCloudinary = async (localFilePath: string) => {
   try {
     if (!localFilePath) return { message: "No Local Path Found" };
-    // uploade file on cloundinary
+    // upload file on cloundinary
     const responseFromCloudinary = await cloudinary.uploader.upload(
       localFilePath,
       //   folderName
@@ -19,7 +19,7 @@ const uploadOnCloudinary = async (localFilePath: string) => {
         resource_type: "auto",
       },
     );
-    // file has been uploaded successfull
+    // file has been uploaded successful
     //console.log("file is uploaded on cloudinary ", response.url);
     fs.unlinkSync(localFilePath);
     return responseFromCloudinary;
