@@ -7,10 +7,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uplodeOnCloudinary = async (localFilePath: string) => {
+const uploadOnCloudinary = async (localFilePath: string) => {
   try {
     if (!localFilePath) return { message: "No Local Path Found" };
-    // uplode file on cloundinary
+    // uploade file on cloundinary
     const responseFromCloudinary = await cloudinary.uploader.upload(
       localFilePath,
       //   folderName
@@ -29,4 +29,4 @@ const uplodeOnCloudinary = async (localFilePath: string) => {
   }
 };
 
-export { uplodeOnCloudinary };
+export { uploadOnCloudinary };
