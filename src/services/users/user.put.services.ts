@@ -1,4 +1,4 @@
-import { Prisma, RoleEnumType } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import prisma from "../../utils/prisma";
 import httpStatus from "http-status";
 

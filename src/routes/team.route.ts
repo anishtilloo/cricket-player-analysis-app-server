@@ -1,11 +1,9 @@
 import { Router } from "express";
-
 // controllers
-import { getAllWithPagenation, getOneTeam } from "../controllers/teams/team.get.controller";
+import { getAllWithPagination, getOneTeam } from "../controllers/teams/team.get.controller";
 import { addTeam } from "../controllers/teams/team.post.controller";
 import { updateTeam } from "../controllers/teams/team.put.controller";
 import { deleteOneTeam } from "../controllers/teams/team.delete.controller";
-
 // Middlewares
 // validation
 import { validate } from "../middlewares/validate";
@@ -24,7 +22,7 @@ teamRouter.get(
 
 teamRouter.get(
     '/get-all-teams',  
-    getAllWithPagenation
+    getAllWithPagination
 );
 
 // POST Routes
@@ -51,8 +49,8 @@ teamRouter.delete(
     deleteOneTeam
 );
 
-// import uplode from "../../middlewares/upload";
-// uplode.fields([
+// import upload from "../../middlewares/upload";
+// upload.fields([
 //     {
 //         name: 'avatar',
 //         maxCount: 1,

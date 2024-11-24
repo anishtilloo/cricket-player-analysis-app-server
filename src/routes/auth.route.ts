@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import { validate } from "../middlewares/validate";
 import { authenticate, authenticateAndCheckRole } from "../middlewares/auth";
-
 import {
   addUser,
   login,
@@ -16,7 +15,7 @@ import {
   loginSchema,
   logoutSchema,
   refreshTokensSchema,
-  resetPasswordSchema,
+  // resetPasswordSchema,
 } from "../schemas/auth.schema";
 import { assignRole } from "../controllers/users/user.patch.controller";
 

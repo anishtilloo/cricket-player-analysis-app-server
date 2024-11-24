@@ -32,11 +32,11 @@ export const getTeamUsingName = async (name : string) => {
     })
 }
 
-export const getToalCountOfTeams = async () => {
+export const getTotalCountOfTeams = async () => {
     return prisma.team.count();
 }
 
-export const getTeamsAllongWithTotalCount = async () => {
+export const getTeamsAlongWithTotalCount = async () => {
     return await prisma.$transaction([
         prisma.team.count(),
         prisma.team.findMany({

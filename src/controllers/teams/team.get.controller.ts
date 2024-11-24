@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getTeam, getTeamsAllongWithTotalCount } from '../../services/teams/team.get.services';
+import { getTeam, getTeamsAlongWithTotalCount } from '../../services/teams/team.get.services';
 import httpStatus from "http-status";
 import ApiError from '../../utils/ApiError';
 
@@ -29,10 +29,10 @@ export async function getOneTeam(req: Request, res: Response) {
 
 // GET request
 // get all teams
-export async function getAllWithPagenation(req: Request, res: Response){
+export async function getAllWithPagination(req: Request, res: Response){
     try {
 
-        const [total, teams] = await getTeamsAllongWithTotalCount()
+        const [total, teams] = await getTeamsAlongWithTotalCount()
         res.status(httpStatus.OK).json({
           success: true,
           message: "Teams Fetched Successfully",
@@ -42,7 +42,7 @@ export async function getAllWithPagenation(req: Request, res: Response){
     } catch (error) { 
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
           success: true,
-          message: `Something went wrong, theam fetching unsuccessfully -> ${error}`,
+          message: `Something went wrong, team fetching unsuccessful -> ${error}`,
           error: error,
         });
     }

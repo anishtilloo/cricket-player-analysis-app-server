@@ -16,7 +16,7 @@ export async function updateTeam(req: Request, res: Response) {
   } catch (error) {
     return res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: "Something went wrong, user updation unsuccessful",
+      message: "Something went wrong, user update unsuccessful",
       error: error,
     });
   }
