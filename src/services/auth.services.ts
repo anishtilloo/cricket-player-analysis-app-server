@@ -4,8 +4,7 @@ import { Secret } from "jsonwebtoken";
 
 import tokenService from "./token.services";
 import { AuthTokensResponse } from "../types/response";
-import { getUserByEmail, getUserById } from "./users/user.get.services";
-import { updateUserById } from "./users/user.put.services";
+import { getUserByEmail } from "./users/user.get.services";
 import prisma from "../utils/prisma"; 
 import ApiError from "../utils/ApiError";
 import exclude from "../utils/exclude";

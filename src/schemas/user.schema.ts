@@ -2,14 +2,14 @@ import {
     z,
     object,
     nativeEnum as _enum,
-    infer as Zinfer
+    infer as Zinfer,
 } from 'zod';
 import { 
     EmailSchema,
     NumberSchema,
     OptionalField, 
     PasswordSchema, 
-    StringMax50 
+    StringMax50,
 } from './common.schema';
 import { RoleEnumType } from '@prisma/client';
 

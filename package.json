@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "backedn for cricket analysis app",
+  "description": "backend for cricket analysis app",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts"

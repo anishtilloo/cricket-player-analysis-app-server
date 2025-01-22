@@ -1,16 +1,17 @@
-import { 
-    object, 
-    any, 
-    intersection, 
-    nativeEnum as _enum,
-    infer as Zinfer
+import {
+  z,
+  object, 
+  any, 
+  intersection, 
+  nativeEnum as _enum,
+  infer as Zinfer,
 } from 'zod';
 import { 
-    NumberAndFloatMinMaxSchema, 
-    NumberSchema, 
-    OptionalField, 
-    StringArray, 
-    StringMax50 
+  NumberAndFloatMinMaxSchema, 
+  NumberSchema, 
+  OptionalField, 
+  StringArray, 
+  StringMax50,
 } from './common.schema';
 import { PLAYERTYPE } from '@prisma/client';
 import { TeamSchema } from './team.schema';
@@ -38,7 +39,7 @@ export const PlayerSchema: any = object({
     analysis: OptionalField(any()),
     physicals: OptionalField(any()),
     mentalStats: OptionalField(any()),
-    playerType: OptionalField(_enum(PLAYERTYPE)),
+    playerType: OptionalField(z.nativeEnum(PLAYERTYPE)),
     team: OptionalField(TeamSchema),
   }),
 });

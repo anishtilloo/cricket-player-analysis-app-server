@@ -31,7 +31,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     });
   }
   try {
-    const user = await chekcAuth(token);
+    const user = await checkAuth(token);
 
     if (!user) {
       res.status(404).json({
@@ -50,7 +50,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-async function chekcAuth(token: string) {
+async function checkAuth(token: string) {
   const accessSecret = process.env.JWT_ACCESS_SECRET as unknown as Secret;
   const userId = await tokenServices.verifyToken<string>(token, accessSecret);
   const user = await getUserById(userId);
