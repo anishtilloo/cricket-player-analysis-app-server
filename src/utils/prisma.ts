@@ -5,13 +5,13 @@ import { PrismaClient } from "@prisma/client";
 let prisma: PrismaClient;
 
 
-// So this declar global is used to declare something in a global scope
+// So this declare global is used to declare something in a global scope
 declare global {
-    // here we are declearing var __prisma as a global variable
+    // here we are declaring var __prisma as a global variable
     var __prisma: PrismaClient | undefined;
 }
 
-// here we are checking if the global prisma variabel does have a value or not if not then we are assigning a new instance of prisma client
+// here we are checking if the global prisma variable does have a value or not if not then we are assigning a new instance of prisma client
 if(!global.__prisma) {
     global.__prisma = new PrismaClient();
 }

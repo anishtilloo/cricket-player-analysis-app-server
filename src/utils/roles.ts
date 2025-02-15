@@ -5,9 +5,9 @@
 //   ADMIN: 4567,
 // };
 
-// enum RoleEnumType {
-//   USER
-//   RECRUITER
-//   TEAMOWNER
-//   ADMIN
-// }
+enum RoleEnumType {
+  USER,
+  RECRUITER,
+  TEAMOWNER,
+  ADMIN
+}

@@ -31,4 +31,4 @@ export async function assignRole(req: Request, res: Response) {
             error: error,
         });
     }
-  }
+}

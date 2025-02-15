@@ -4,7 +4,7 @@ import { PlayerSchemaType } from "../../schemas/player.schema";
 export const update = async (id: string, player: PlayerSchemaType) => {
     return prisma.player.update({
         where: {
-            id,
+            id: BigInt(id),
         },
         data: {
             ...player

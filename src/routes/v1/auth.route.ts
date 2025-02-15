@@ -1,14 +1,14 @@
 import { Router } from "express";
 
-import { validate } from "../middlewares/validate";
-import { authenticate, authenticateAndCheckRole } from "../middlewares/auth";
+import { validate } from "../../middlewares/validate";
+import { authenticate, authenticateAndCheckRole } from "../../middlewares/auth";
 import {
   addUser,
   login,
   logout,
   refreshTokens,
   // resetPassword,
-} from "../controllers/auth.controllers";
+} from "../../controllers/auth.controllers";
 import {
   addUserSchema,
   assignRoleSchema,
@@ -16,8 +16,10 @@ import {
   logoutSchema,
   refreshTokensSchema,
   // resetPasswordSchema,
-} from "../schemas/auth.schema";
-import { assignRole } from "../controllers/users/user.patch.controller";
+} from "../../schemas/auth.schema";
+import { assignRole } from "../../controllers/users/user.patch.controller";
+import { RoleEnumType } from "@prisma/client";
+import { hasPermission } from "../../middlewares/auth";
 
 const authRouter = Router();
 
@@ -52,8 +54,9 @@ authRouter.post(
 
 authRouter.patch(
     "/assign-role", 
-    authenticate, 
-    authenticateAndCheckRole(['ADMIN']), 
+    authenticate,
+    authenticateAndCheckRole([RoleEnumType.ADMIN]),
+    hasPermission("assign_role", "update"),
     validate(assignRoleSchema),
     assignRole
 );

@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 // import local files
-import router from "./routes";
+import router from "./routes/v1";
 import { devEnvironmentVariable } from "./utils/envConstants";
 
 // Load environment variables from .env file
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Load Routes
-app.use("/api/v1", router);
+app.use("/api", router);
 
 app.get('/testing-route', (req, res) => {
     res.send("Testing Server is Working");

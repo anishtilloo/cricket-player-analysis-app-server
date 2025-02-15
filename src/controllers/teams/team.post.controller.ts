@@ -10,13 +10,18 @@ import ApiError from '../../utils/ApiError';
 export async function addTeam(req: Request , res: Response) {
     try {
         const team = req.body;
+        const user = req.user;
         
         const teamExist = await getTeamUsingName(team.teamName);
         
         if (teamExist) {
             throw new ApiError(httpStatus.BAD_REQUEST, "Please select a unique name for your team");
         }
-        const result = await addTeamService(team);
+
+        if (!user?.organizationId) {
+            throw new ApiError(httpStatus.BAD_REQUEST, "User needs to be a part of an organization to create team");
+        }
+        const result = await addTeamService(team, user?.organizationId);
         
         res.status(httpStatus.CREATED).json({ 
             success: true, 

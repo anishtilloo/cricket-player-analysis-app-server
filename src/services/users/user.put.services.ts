@@ -17,7 +17,7 @@ export const updateUserById = async (
         throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
     }
     const updatedUser = await prisma.user.update({
-        where: { id: userId },
+        where: { id: BigInt(userId) },
         data: updateBody,
     });
     return updatedUser;

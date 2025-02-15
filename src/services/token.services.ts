@@ -35,7 +35,7 @@ const saveToken = async (
   const createdToken = prisma.token.create({
     data: {
       token,
-      userId: String(userId),
+      userId: BigInt(userId),
       expires: expires.toDate(),
       type,
       blacklisted,
@@ -56,7 +56,7 @@ const verifyToken = async <T>(token: string, secret: Secret) : Promise<T> => {
       where: { 
         token, 
         type: payload.type, 
-        userId, 
+        userId: BigInt(userId), 
         blacklisted: false 
       },
     });
@@ -129,14 +129,14 @@ const generateResetPasswordToken = async (email: string): Promise<string> => {
     "minutes"
   );
   const resetPasswordToken = generateToken(
-    user.id,
+    String(user.id),
     expires,
     TokenType.RESET_PASSWORD,
     devEnvironmentVariable.jwtAccessSecret,
   );
   await saveToken(
     resetPasswordToken,
-    user.id,
+    String(user.id),
     expires,
     TokenType.RESET_PASSWORD
   );

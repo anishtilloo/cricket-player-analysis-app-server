@@ -9,6 +9,7 @@ import createUser from "../services/users/user.post.services";
 import exclude from "../utils/exclude";
 import { devEnvironmentVariable } from "../utils/envConstants";
 import ApiError from "../utils/ApiError";
+import { convertBigIntToString } from "../utils/common";
 
 export async function addUser(req: Request, res: Response) {
   try {
@@ -30,10 +31,10 @@ export async function addUser(req: Request, res: Response) {
 
     const tokens = await tokenServices.generateAuthTokens(user);
 
-    res.status(httpStatus.CREATED).json({
+    res.cookie('access_token', tokens.access).status(httpStatus.CREATED).json({
       success: true,
-      data: userWithoutPassword,
-      tokens: tokens,
+      data: convertBigIntToString(userWithoutPassword),
+      refreshToken: tokens.refresh,
       message: "The user is added and the auth tokens are created",
       error: null,
     });
@@ -63,7 +64,7 @@ export async function login(req: Request, res: Response) {
       success: true,
       data: user,
       tokens: tokens,
-      message: "The user is authorised",
+      message: "The user is authorized",
       error: null,
     });
   } catch (error) {
@@ -71,7 +72,7 @@ export async function login(req: Request, res: Response) {
       success: false,
       user: null,
       tokens: null,
-      message: `Something is wrong, the user is not authorised -> ${error}`,
+      message: `Something is wrong, the user is not authorized -> ${error}`,
       error: null,
     });
   }

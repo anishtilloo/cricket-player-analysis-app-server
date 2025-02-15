@@ -29,7 +29,7 @@ export const queryUsers = async (
 
 export const getUserById = async (id: string) => {
   return prisma.user.findUnique({
-    where: { id },
+    where: { id: BigInt(id) },
   });
 };
 

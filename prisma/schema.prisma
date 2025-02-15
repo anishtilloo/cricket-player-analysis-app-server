@@ -8,55 +8,66 @@ datasource db {
 }
 
 model User {
-  id                          String              @id @unique @default(uuid())
+  id                          BigInt              @id @unique @default(autoincrement())
   name                        String              @db.VarChar(255)
   email                       String              @unique
   password                    String
   avatar                      String?             @default("default.png")
-  backgroundImg               String?
-  role                        RoleEnumType?       @default(USER)
-  verificationCode            String?             @db.Text @unique
-  isEmailVerified             Boolean  @default(false)
+  role                        RoleEnumType        
+  isEmailVerified             Boolean             @default(false)
   createdAt                   DateTime            @default(now())
   updatedAt                   DateTime            @updatedAt
+  playerId                    BigInt?
+  player                      Player?
   token                       Token[]
-  playingEleven               PlayingEleven[]
-  yourTeam                    YourTeam[]
+  organizationId              BigInt?
+  organization                Organization?         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@unique([email, verificationCode])
-  @@index([email, verificationCode])
+
+
   @@map("Users")
 }
 
+model Organization {
+  id                          BigInt              @id @unique @default(autoincrement())
+  name                        String              @db.VarChar(255)
+  ownerName                   String              @db.VarChar(255)
+  email                       String              @unique
+  teams                       Team[]
+  users                       User[]
+}
+
 model Token {
-  id                          String              @id @unique @default(uuid())
+  id                          BigInt              @id @unique @default(autoincrement())
   token                       String
   type                        TokenType
   expires                     DateTime
   blacklisted                 Boolean
   createdAt                   DateTime            @default(now())
-  userId                      String                 
+  userId                      BigInt                 
   user                        User                @relation(fields: [userId], references: [id], onDelete: Cascade)  
 
   @@map("Tokens")
 }
 
 model Team {
-  id                          String               @id @default(uuid())
+  id                          BigInt               @id @default(autoincrement())
   teamName                    String               @db.VarChar(255)
   ownerName                   String
   coach                       Json?
   netWorth                    Float?
   teamLogo                    String?
   players                     Player[]
-  playingElevens              PlayingEleven[]
+  playingElevens              PlayingSquad[]
+  organizationId              BigInt
+  organization                Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@unique([id, teamName])
   @@map("Teams")
 }
 
 model Player {
-  id                          String                @id @default(uuid())
+  id                          BigInt                @id @unique @default(autoincrement())
   playerName                  String                @db.VarChar(255)
   playerImg                   String?
   characteristics             String[]
@@ -70,44 +81,35 @@ model Player {
   physicals                   Json?
   mentalStats                 Json?
   playerType                  PLAYERTYPE
-  teamId                      String?
+  teamId                      BigInt?
   teamName                    String?
-  team                        Team?                  @relation(fields: [teamId, teamName], references: [id, teamName])
-  playingElevenId             String?
-  playingEleven               PlayingEleven?         @relation(fields: [playingElevenId], references: [id])
-  yourTeamId                  String?
-  yourTeam                    YourTeam?              @relation(fields: [yourTeamId], references: [id])
+  team                        Team?                 @relation(fields: [teamId, teamName], references: [id, teamName])
+  playingSquadId              BigInt?
+  playingSquad                PlayingSquad?         @relation(fields: [playingSquadId], references: [id])
+  userId                      BigInt?               @unique
+  user                        User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("Players")
 }
 
-model PlayingEleven {
-  id                          String                @id @unique @default(uuid())
-  playingElevenTeamName       String?               @db.VarChar(255) @default("playing-eleven")
-  players                     Player[]
-  userId                      String             
-  user                        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teamId                      String?
-  team                        Team?                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
+model PlayingSquad {
+  id                          BigInt                @id @unique @default(autoincrement())
+  players                     Player[]          
+  teamId                      BigInt
+  team                        Team                  @relation(fields: [teamId], references: [id], onDelete: Cascade)
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
 
-  @@map("PlayingElevens")
-}
-
-model YourTeam {
-  id                          String                @id @unique @default(uuid())
-  yourTeamName                String?               @db.VarChar(255) @default("your-team")
-  players                     Player[]
-  userId                      String             
-  user                        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("PlayingSquads")
 }
 
 enum RoleEnumType {
-  USER
-  RECRUITER
-  TEAMOWNER
   ADMIN
+  TEAM_MANAGER
+  ANALYST
+  RECRUITER
+  PLAYER
+  USER
 }
 
 enum TokenType {

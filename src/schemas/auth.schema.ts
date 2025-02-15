@@ -1,4 +1,5 @@
 import { object, string, z } from "zod";
+import { RoleEnumType } from "@prisma/client";
 import { EmailSchema, StringMax50 } from "./common.schema";
 
 export const addUserSchema = object({
@@ -6,7 +7,8 @@ export const addUserSchema = object({
     name: StringMax50(),
     email: EmailSchema(),
     password: StringMax50(),
-    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]).default('USER'),
+    role: z.enum([RoleEnumType.ADMIN, RoleEnumType.ANALYST, RoleEnumType.PLAYER, RoleEnumType.RECRUITER, RoleEnumType.TEAM_MANAGER, RoleEnumType.USER]).default(RoleEnumType.USER),
+    organization: StringMax50(),
   }),
 });
 
@@ -53,6 +55,6 @@ export const verifyEmailSchema = object({
 export const assignRoleSchema = object({
   body: object({
     userId: StringMax50(),
-    role: z.enum(["USER", "RECRUITER", "TEAMOWNER", "ADMIN"]).default('USER'),
+    role: z.enum([RoleEnumType.ADMIN, RoleEnumType.ANALYST, RoleEnumType.PLAYER, RoleEnumType.RECRUITER, RoleEnumType.TEAM_MANAGER, RoleEnumType.USER]).default(RoleEnumType.USER),
   }),
 });

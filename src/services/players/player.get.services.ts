@@ -7,7 +7,7 @@ export const listPlayers = async () => {
 export const getPlayer = async (id: string) => {
   return prisma.player.findUnique({
     where: {
-      id,
+      id: BigInt(id),
     },
   });
 };

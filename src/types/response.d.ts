@@ -1,3 +1,5 @@
+import type { User } from "@prisma/client";
+
 export interface TokenResponse {
   token: string;
   expires: Date | string;
@@ -17,8 +19,7 @@ declare namespace Express {
 declare global {
   namespace Express {
     interface Request {
-      user?: any,
-      extraString?: String,
+      user?: User,
     }
   }
 }
