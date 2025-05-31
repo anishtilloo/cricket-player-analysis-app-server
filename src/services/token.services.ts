@@ -46,10 +46,8 @@ const saveToken = async (
 
 const verifyToken = async <T>(token: string, secret: Secret) : Promise<T> => {
   const payload = jwt.verify(token, secret) as unknown as JwtPayload;
-  console.log("payload", payload);
   
   const userId = String(payload.sub);
-  console.log("userId", userId);
 
   if (payload.type === "REFRESH") {
     const tokenData = await prisma.token.findFirst({
@@ -60,8 +58,6 @@ const verifyToken = async <T>(token: string, secret: Secret) : Promise<T> => {
         blacklisted: false 
       },
     });
-    console.log("tokenData", tokenData);
-    
     if (!tokenData) {
       throw new Error("Token not found");
     }
