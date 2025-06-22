@@ -9,16 +9,18 @@ import prisma from "../utils/prisma";
 import ApiError from "../utils/ApiError";
 import exclude from "../utils/exclude";
 import { encryptPassword, isPasswordMatch } from "../utils/encryption";
+import { convertBigIntToString } from "../utils/common";
 
 const loginUserWithEmailAndPassword = async (
   email: string,
   password: string
-): Promise<Omit<User, "password">> => {
+) => {
   const user = await getUserByEmail(email);
   if (!user || !(await isPasswordMatch(password, user.password as string))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Incorrect email or password");
   }
-  return exclude(user, ["password"]);
+  const userWithoutPassword = exclude(user, ["password"])
+  return convertBigIntToString(userWithoutPassword);
 };
 
 const logout = async (refreshToken: string): Promise<void> => {
@@ -47,7 +49,7 @@ const refreshAuth = async (
 
     const { userId } = userData;
     await prisma.token.delete({ where: { id: userData.id } });
-    return tokenService.generateAuthTokens({ id: String(userId) });
+    return tokenService.generateAuthTokens(userId.toString());
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, `Please authenticate -> ${error}`);
   }

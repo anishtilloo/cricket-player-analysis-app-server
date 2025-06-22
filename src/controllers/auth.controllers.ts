@@ -29,7 +29,7 @@ export async function addUser(req: Request, res: Response) {
       "updatedAt",
     ]);
 
-    const tokens = await tokenServices.generateAuthTokens(user);
+    const tokens = await tokenServices.generateAuthTokens(user as any);
 
     res.cookie('access_token', tokens.access).status(httpStatus.CREATED).json({
       success: true,
@@ -58,7 +58,7 @@ export async function login(req: Request, res: Response) {
       password
     );
 
-    const tokens = await tokenServices.generateAuthTokens(user);
+    const tokens = await tokenServices.generateAuthTokens(user.id);
     
     res.status(httpStatus.CREATED).json({
       success: true,

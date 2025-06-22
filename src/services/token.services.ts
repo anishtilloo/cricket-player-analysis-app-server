@@ -9,6 +9,7 @@ import { devEnvironmentVariable } from "../utils/envConstants";
 import { AuthTokensResponse } from "../types/response";
 import { JwtPayload } from "../types/jwt.types";
 import { getUserByEmail } from "./users/user.get.services";
+import { UserType } from "../types/user.types";
 
 const generateToken = (
   userId: string,
@@ -66,22 +67,24 @@ const verifyToken = async <T>(token: string, secret: Secret) : Promise<T> => {
   return userId as unknown as T;
 };
 
-const generateAuthTokens = async (user: any): Promise<AuthTokensResponse> => {
-  const accessToken = await generateAccessToken(user);
-  const refreshToken = await generateRefreshToken(user);
+const generateAuthTokens = async (id: string): Promise<AuthTokensResponse> => {
+  const accessToken = await generateAccessToken(id);
+  const refreshToken = await generateRefreshToken(id);
   return {
     access: accessToken,
     refresh: refreshToken
   };
 };
 
-const generateAccessToken = async (user: any) => {
-
+const generateAccessToken = async (id: string) => {
+  if (!id) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "User ID is required to generate access token");
+  }
   const accessTokenExpires = moment().add('120',
     "minutes"
   );
   const accessToken = generateToken(
-    String(user.id),
+    id,
     accessTokenExpires,
     TokenType.ACCESS,
     devEnvironmentVariable.jwtAccessSecret as unknown as Secret
@@ -93,19 +96,19 @@ const generateAccessToken = async (user: any) => {
   };
 }
 
-const generateRefreshToken = async (user: any) => {
+const generateRefreshToken = async (id: string) => {
   const refreshTokenExpires = moment().add('30',
     "days"
   );
   const refreshToken = generateToken(
-    String(user.id),
+    id,
     refreshTokenExpires,
     TokenType.REFRESH,
     devEnvironmentVariable.jwtRefreshSecret
   );
   await saveToken(
     refreshToken,
-    String(user.id),
+    id,
     refreshTokenExpires,
     TokenType.REFRESH
   );
