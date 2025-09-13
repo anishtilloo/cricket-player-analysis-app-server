@@ -5,7 +5,7 @@ import type { RoleEnumType } from "@prisma/client";
 
 import { getUserById } from "../services/users/user.get.services";
 import tokenServices from "../services/token.services";
-import { ROLES } from "../config/auth.config";
+import { ROLES_ATTRIBUTES } from "../config/auth.config";
 import type { RolesWithPermissions, Permissions } from "../types/auth.types";
 
 
@@ -16,7 +16,7 @@ export function hasPermission<Resource extends keyof Permissions>(
     data?: Permissions[Resource]["dataType"]
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
-      const permission = (ROLES as RolesWithPermissions)[req.user!.role][resource]?.[action];
+      const permission = (ROLES_ATTRIBUTES as RolesWithPermissions)[req.user!.role][resource]?.[action];
 
       if (typeof permission === "boolean") {
         return permission && next();

@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "RoleEnumType" AS ENUM ('ORGANIZATION', 'ORG_ADMIN', 'ORG_TEAM_MANAGER', 'ORG_ANALYST', 'RECRUITER', 'PLAYER', 'USER');
+CREATE TYPE "RoleEnumType" AS ENUM ('ADMIN', 'TEAM_MANAGER', 'ANALYST', 'RECRUITER', 'PLAYER', 'USER');
 
 -- CreateEnum
 CREATE TYPE "TokenType" AS ENUM ('ACCESS', 'REFRESH', 'RESET_PASSWORD', 'VERIFY_EMAIL');
@@ -18,8 +18,8 @@ CREATE TABLE "Users" (
     "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "playerId" BIGINT NOT NULL,
-    "organizationId" BIGINT NOT NULL,
+    "playerId" BIGINT,
+    "organizationId" BIGINT,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );

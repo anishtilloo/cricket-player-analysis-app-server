@@ -6,9 +6,7 @@ export const createOrgSchema = object({
     body: object({
         name: StringMax50(),
         email: EmailSchema(),
-        password: StringMax50(),
-        role: z.enum([RoleEnumType.ADMIN, RoleEnumType.ANALYST, RoleEnumType.PLAYER, RoleEnumType.RECRUITER, RoleEnumType.TEAM_MANAGER, RoleEnumType.USER]).default(RoleEnumType.USER),
-        organization: StringMax50(),
+        ownerName: StringMax50(),
     }),
 });
 

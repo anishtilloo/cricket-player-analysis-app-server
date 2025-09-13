@@ -10,17 +10,25 @@ import exclude from "../utils/exclude";
 import { devEnvironmentVariable } from "../utils/envConstants";
 import ApiError from "../utils/ApiError";
 import { convertBigIntToString } from "../utils/common";
+import { User } from "@prisma/client";
+import {
+  RoleEnumType
+} from "@prisma/client";
 
 export async function addUser(req: Request, res: Response) {
   try {
-    const reqBody = req.body;
+    const reqBody = req.body as Omit<User, "id" | "createdAt" | "updatedAt">;
     const existingUserWithSameEmail = await getUserByEmail(reqBody.email);
     
     if (existingUserWithSameEmail) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
     }
+    const userPayload = {
+      ...reqBody,
+      role: RoleEnumType.USER,
+    }
     
-    const user = await createUser(reqBody);
+    const user = await createUser(userPayload);
 
     // remove password, createdAt and updatedAt are removed from the response in below function
     const userWithoutPassword = exclude(user, [

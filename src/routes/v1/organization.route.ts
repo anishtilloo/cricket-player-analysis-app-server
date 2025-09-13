@@ -3,20 +3,17 @@ import { Router } from "express";
 import { validate } from "../../middlewares/validate";
 import { authenticate, authenticateAndCheckRole } from "../../middlewares/auth";
 import {
-  addUser,
-  login,
-  logout,
-  refreshTokens,
+  addOrganization,
   // resetPassword,
-} from "../../controllers/auth.controllers";
+} from "../../controllers/orgs/org.post.controller";
 import {
-  addUserSchema,
+  createOrgSchema,
   assignRoleSchema,
   loginSchema,
   logoutSchema,
   refreshTokensSchema,
   // resetPasswordSchema,
-} from "../../schemas/auth.schema";
+} from "../../schemas/organization.schema";
 import { assignRole } from "../../controllers/users/user.patch.controller";
 import { RoleEnumType } from "@prisma/client";
 import { hasPermission } from "../../middlewares/auth";
@@ -25,25 +22,25 @@ const orgRouter = Router();
 
 orgRouter.post(
   "/create-org", 
-  validate(addUserSchema), 
-  addUser
+  validate(createOrgSchema), 
+  addOrganization
 );
-orgRouter.post(
-  "/login", 
-  validate(loginSchema), 
-  login
-);
-orgRouter.post(
-  "/logout", 
-  validate(logoutSchema), 
-  logout
-);
+// orgRouter.post(
+//   "/login", 
+//   validate(loginSchema), 
+//   login
+// );
+// orgRouter.post(
+//   "/logout", 
+//   validate(logoutSchema), 
+//   logout
+// );
 
-orgRouter.post(
-  "/refresh-tokens",
-  validate(refreshTokensSchema),
-  refreshTokens
-);
+// orgRouter.post(
+//   "/refresh-tokens",
+//   validate(refreshTokensSchema),
+//   refreshTokens
+// );
 
 // orgRouter.post(
 //   "/reset-password",

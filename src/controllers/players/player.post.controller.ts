@@ -9,7 +9,6 @@ import httpStatus from 'http-status';
 export async function addPlayer(req: Request , res: Response) {
     try {
         const player = req.body;
-        console.log("player", player);
         
         const result = await addPlayerService(player);
         res.status(httpStatus.CREATED).json({ 

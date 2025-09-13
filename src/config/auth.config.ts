@@ -1,6 +1,6 @@
 import type { RolesWithPermissions } from "../types/auth.types"
 
-export const ROLES = {
+export const ROLES_ATTRIBUTES = {
     ADMIN: {
         user_in_org: {
             view: true,
